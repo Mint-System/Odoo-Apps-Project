@@ -2,13 +2,13 @@
     'name': "Project Task Dependency Counter",
 
     'summary': """
-        Module summary.
+        Adds smart button with dependency counter to task from.
     """,
     
     'author': 'Mint System GmbH, Odoo Community Association (OCA)',
     'website': 'https://www.mint-system.ch',
     'category': 'Project',
-    'version': '13.0.1.0.0',
+    'version': '14.0.1.0.0',
     'license': 'AGPL-3',
     
     'depends': ['project_task_dependency'],
