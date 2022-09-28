@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project_key_link_type.edit_project</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+
+            <field name="label_tasks" position="before">
+                <field name="code"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="project_project_view_form_simplified" model="ir.ui.view">
+        <field name="name">project_key_link_type.project_project_view_form_simplified</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+        <field name="arch" type="xml">
+
+            <field name="name" position="after">
+                <field name="type_id" class="oe_inline"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_project" model="ir.ui.view">
+        <field name="name">project_key_link_type.view_project</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project" />
+        <field name="arch" type="xml">
+            
+            <field name="name" position="before">
+                <field name="code"/>
+            </field>
+
+            <field name="name" position="after">
+                <field name="type_id"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_project_kanban" model="ir.ui.view">
+        <field name="name">project_key_link_type.view_project_kanban</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban" />
+        <field name="arch" type="xml">
+            
+            <xpath expr="/kanban/field[@name='tag_ids']" position="after">
+                <field name="code"/>
+            </xpath>
+            <xpath expr="//div[hasclass('o_primary')]/span[1]/t" position="before">
+                [<t t-esc="record.code.value"/>] 
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_project_project_filter" model="ir.ui.view">
+        <field name="name">project_key_link_type.view_project_project_filter</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter" />
+        <field name="arch" type="xml">
+
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">['|', ('name', 'ilike', self),('code', 'ilike', self)]</attribute>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>

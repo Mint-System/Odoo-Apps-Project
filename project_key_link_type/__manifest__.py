@@ -1,15 +1,20 @@
 {
-    "name": "Project Task Dependency Counter",
+    "name": "Project Key Link Type",
     "summary": """
-        Adds smart button with dependency counter to task from.
+        Create project key from type sequence.
     """,
     "author": "Mint System GmbH, Odoo Community Association (OCA)",
     "website": "https://www.mint-system.ch",
     "category": "Project",
     "version": "14.0.1.0.0",
     "license": "AGPL-3",
-    "depends": ["project_task_dependency"],
-    "data": ["views/project_task_view.xml"],
+    "depends": ["project_type"],
+    "data": [
+        "data/project_sequence.xml",
+        "views/project_task.xml",
+        "views/project_project.xml",
+        "views/project_type.xml",
+    ],
     "installable": True,
     "application": False,
     "auto_install": False,

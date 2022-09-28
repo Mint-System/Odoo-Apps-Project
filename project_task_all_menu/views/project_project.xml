@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_view_all_task2" model="ir.actions.act_window">
+        <field name="name">All Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="context">{'all_task': 1}</field>
+        <field name="search_view_id" ref="project.view_task_search_form_extended"/>
+    </record>
+
+    <menuitem name="All Tasks" id="menu_project_task_all" parent="project.menu_main_pm"
+        action="action_view_all_task2" sequence="3" groups="base.group_no_one,project.group_project_user"/>
+
+</odoo>

@@ -2,11 +2,11 @@
     :target: http://www.gnu.org/licenses/gpl-3.0-standalone.html
     :alt: License: GPL-3
 
-===============================
-Project Task Dependency Counter
-===============================
+=====================
+Project Key Link Type
+=====================
 
-Adds smart button with dependency counter to task from.
+Create project key from type sequence.
 
 For a detailed documentation have a look at https://www.odoo-wiki.org/.
 
