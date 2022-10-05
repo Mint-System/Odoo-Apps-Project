@@ -13,9 +13,9 @@ class Project(models.Model):
         copy=False,
     )
 
-    _sql_constraints = [
-        ('project_project_unique_code', 'UNIQUE (code)', _('The code must be unique!')),
-    ]
+    # _sql_constraints = [
+    #     ('project_project_unique_code', 'UNIQUE (code)', _('The code must be unique!')),
+    # ]
 
     def name_get(self):
         """Set proejct display name."""
