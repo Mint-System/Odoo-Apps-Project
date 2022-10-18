@@ -6,6 +6,7 @@ _logger = logging.getLogger(__name__)
 class Project(models.Model):
     _inherit = 'project.project'
 
+    type_id = fields.Many2one(copy=True)
     code = fields.Char(
         string='Project Code',
         required=True,
@@ -33,8 +34,9 @@ class Project(models.Model):
 
     def write(self, vals):
         # Generate code if default is set.
-        if self.code == '/':
-            self._set_code(vals)    
+        for i, project in enumerate(self):
+            if project.code == '/' and not project.is_template:
+                project._set_code(vals)    
         res = super(Project, self).write(vals)
         # Update analytic account
         self._update_analytic_account()
@@ -45,7 +47,7 @@ class Project(models.Model):
         # Generate code if default is set.
         if vals.get('code', '/') == '/':
             self._set_code(vals)
-        # Setup andupdate analytic account
+        # Setup and update analytic account
         analytic_account = self._create_analytic_account_from_values(vals)
         vals['analytic_account_id'] = analytic_account.id
         res = super().create(vals)
@@ -53,8 +55,8 @@ class Project(models.Model):
         return res
     
     def _update_analytic_account(self):
-        if self.analytic_account_id:
-            self.analytic_account_id.write({
-                'name': '[%s] %s' % (self.code, self.name),
-                'partner_id': self.partner_id.id
+        for project in self.filtered(lambda p: p.analytic_account_id):
+            project.analytic_account_id.write({
+                'name': '[%s] %s' % (project.code, project.name),
+                'partner_id': project.partner_id.id
             })
