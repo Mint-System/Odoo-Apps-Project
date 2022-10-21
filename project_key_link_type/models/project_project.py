@@ -1,6 +1,7 @@
 from odoo import _, api, fields, models
 import logging
 _logger = logging.getLogger(__name__)
+from odoo.osv.expression import OR, AND
 
 
 class Project(models.Model):
@@ -24,6 +25,18 @@ class Project(models.Model):
         for record in self:
             res.append((record.id, '[%s] %s' % (record.code, record.name)))
         return res
+
+    @api.model
+    def name_search(self, name="", args=None, operator="ilike", limit=100):
+        args = args or []
+        domain = []
+        if name:
+            domain = OR([
+                [('name', 'ilike', name)],
+                [('code', 'ilike', name)]
+            ])
+        records = self.search(AND([args, domain]), limit=limit)
+        return records.name_get()
 
     def _set_code(self, vals):
         """Create project sequence from type."""
