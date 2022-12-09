@@ -47,7 +47,8 @@ class Project(models.Model):
 
     def write(self, vals):
         # Generate code if default is set.
-        if (vals.get('code') or self.code == '/') and not self.is_template:
+
+        if ((vals.get('code') or self.code) == '/') and not self.is_template:
                 self._set_code(vals)    
         res = super(Project, self).write(vals)
         # Update analytic account
