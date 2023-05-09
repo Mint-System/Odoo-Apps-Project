@@ -7,14 +7,14 @@ class ProjectPhase(models.Model):
     _order = 'sequence'
     
     name = fields.Char(string='Phase Name')
-    sequence = fields.Integer(string='Sequence')
-    project_id = fields.Many2one('project.project',string='Project',default=lambda self: self.env.context.get('default_project_id'))
-    start_date = fields.Date(string='Start Date', copy=False)
-    end_date = fields.Date(string='End Date', copy=False)
-    company_id = fields.Many2one('res.company',string='Company',default=lambda self: self.env['res.company']._company_default_get())
+    sequence = fields.Integer()
+    project_id = fields.Many2one('project.project',string='Project' ,default=lambda self: self.env.context.get('default_project_id'))
+    start_date = fields.Date(opy=False)
+    end_date = fields.Date(copy=False)
+    company_id = fields.Many2one('res.company', default=lambda self: self.env['res.company']._company_default_get())
     user_id = fields.Many2one('res.users', string='Responsible User', default=lambda self: self.env.uid)
     task_count = fields.Integer(compute='_compute_get_task',string='Count')
-    notes = fields.Text(string='Notes')
+    notes = fields.Text()
 
     def action_project_phase_task(self):
         self.ensure_one()
