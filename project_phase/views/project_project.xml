@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_form_inherit" model="ir.ui.view">
+        <field name="name">project.project.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            <button name="%(project.project_collaborator_action)d" position="after">
+                <button class="oe_stat_button" name="action_project_phase" type="object"
+                    icon="fa-tasks" attrs="{'invisible': [('project_phase_count', '=', 0)]}">
+                    <field name="project_phase_count" widget="statinfo" string="Phases" />
+                </button>
+            </button>
+        </field>
+    </record>
+
+    <record id="phase_pivot_view" model="ir.ui.view">
+        <field name="name">report.project.task.phase.pivot.inherited</field>
+        <field name="model">report.project.task.user</field>
+        <field name="inherit_id" ref="project.view_task_project_user_pivot" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position='after'>
+                <field name="phase_id" type="row" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
