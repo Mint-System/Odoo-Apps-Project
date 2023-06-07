@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <record id="view_open_task_search_form_extended" model="ir.ui.view">
+        <field name="name">project_partner_open_tasks.view_task_search_form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_tasks']" position='after'>
+                <filter string="Open Tasks" name="open_task" domain="[('stage_id.is_done', '=', False)]"/>
+            </xpath>            
+        </field>
+    </record> -->
+    
+    <record id="project_open_task_action_from_partner" model="ir.actions.act_window">
+        <field name="name">Open Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="project.view_task_search_form_extended"/>
+    </record>
+
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">project_partner_open_tasks.view_partner_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <button name="%(project.project_task_action_from_partner)d" position="replace">
+                <button class="oe_stat_button" type="action"
+                    name="%(project_open_task_action_from_partner)d"
+                    groups="project.group_project_user"
+                    context="{'search_default_partner_id': active_id, 'search_default_open_tasks': True, 'default_partner_id': active_id}"
+                    icon="fa-tasks">
+                    <field string="Tasks" name="task_open_count" widget="statinfo" />
+                </button>
+            </button>
+        </field>
+    </record>
+
+</odoo>
