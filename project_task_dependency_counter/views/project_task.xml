@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_task_form2" model="ir.ui.view">
+        <field name="name">project_task_dependency_counter.view_task_form2</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="view_depend_on_ids"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-tasks"
+                    attrs="{'invisible' : [('depend_on_ids_count', '=', 0)]}"
+                >
+                    <field
+                        string="Blocked By"
+                        name="depend_on_ids_count"
+                        widget="statinfo"
+                    />
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
