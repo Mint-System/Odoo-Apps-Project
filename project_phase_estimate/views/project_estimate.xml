@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project_estimate_tree" model="ir.ui.view">
+        <field name="name">project_phase_estimate.project_estimate_tree</field>
+        <field name="model">project.estimate</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="project_id" />
+                <field name="phase_id" />
+                <field name="planned_date_begin" optional="show" />
+                <field name="planned_date_end" optional="show" />
+                <field name="planned_hours" widget="timesheet_uom" />
+                <field name="effective_hours" widget="timesheet_uom" optional="show" />
+                <field name="remaining_hours" widget="timesheet_uom" optional="show" />
+                <field name="progress" widget="progressbar" optional="show" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="project_estimate_filter" model="ir.ui.view">
+        <field name="name">project_phase_estimate.project_estimate_filter</field>
+        <field name="model">project.estimate</field>
+        <field name="arch" type="xml">
+            <search string="Search Project Estimate">
+                <field name="project_id" string="Project"/>
+                <field name="phase_id" string="Task Phase"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Task Phase" name="phase" context="{'group_by': 'phase_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_project_estimate_tree" model="ir.actions.act_window">
+        <field name="name">Project Estimates</field>
+        <field name="res_model">project.estimate</field>
+        <field name="binding_view_types">tree</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_estimate_tree" />
+    </record>
+
+    <menuitem id="menu_action_project_estimate_tree" name="Project Estimates"
+        action="action_project_estimate_tree" parent="project_phase.menu_project_phases"
+        sequence="2" />
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project_phase_estimate.edit_project</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            
+            <page name="settings" position="after">
+                <page name="project_estimates" string="Project Estimates">
+                    <field name="estimate_ids" nolabel="1" context="{'default_project_id': active_id}">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="project_id" optional="hide"/>
+                            <field name="phase_id" />
+                            <field name="planned_date_begin" optional="show" />
+                            <field name="planned_date_end" optional="show" />
+                            <field name="planned_hours" widget="timesheet_uom" />
+                            <field name="effective_hours" widget="timesheet_uom" optional="show" />
+                            <field name="remaining_hours" widget="timesheet_uom" optional="show" />
+                            <field name="progress" widget="progressbar" optional="show" />
+                        </tree>
+                    </field>
+                </page>
+            </page>
+
+        </field>
+    </record>
+
+</odoo>
