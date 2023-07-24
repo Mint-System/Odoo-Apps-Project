@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='phase_id']" position="after">
-                <field name="progress" attrs="{'invisible': [('phase_id', '=', False)]}" />
+                <field name="estimate_progress" widget="progressbar" attrs="{'invisible': ['|', ('phase_id', '=', False), ('estimate_progress', '=', 0)]}" />
             </xpath>
         </field>
     </record>
