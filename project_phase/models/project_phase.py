@@ -8,6 +8,7 @@ class ProjectPhase(models.Model):
     _description = 'Task Phase'
     _order = 'sequence'
     
+    active = fields.Boolean(default=True)
     name = fields.Char(string='Phase Name')
     sequence = fields.Integer()
     project_id = fields.Many2one('project.project', string='Project', default=lambda self: self.env.context.get('default_project_id'))
@@ -18,6 +19,10 @@ class ProjectPhase(models.Model):
     task_ids = fields.One2many('project.task', 'phase_id')
     task_count = fields.Integer(compute='_compute_get_task', string='Count')
     notes = fields.Text()
+
+    _sql_constraints = [
+        ('name_project_id_unique', 'unique(name, project_id)', 'The combination of name and project must be unique.'),
+    ]
 
     def action_project_phase_task(self):
         self.ensure_one()

@@ -10,6 +10,7 @@ class ProjectEstimate(models.Model):
     _rec_name = 'phase_id'
     _order = 'sequence'
 
+    active = fields.Boolean(default=True)
     sequence = fields.Integer()
     project_id = fields.Many2one('project.project', string='Project')
     phase_id = fields.Many2one('project.task.phase', string='Project Phase')

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="task_phase_edit" model="ir.ui.view">
+        <field name="name">project_phase_estimate.task_phase_edit</field>
+        <field name="model">project.task.phase</field>
+        <field name="inherit_id" ref="project_phase.task_phase_edit" />
+        <field name="arch" type="xml">
+            
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" name="action_project_estimate"
+                    type="object" icon="fa-clock-o"
+                    attrs="{'invisible': [('estimate_count', '=', 0)]}">
+                    <field name="estimate_count" widget="statinfo" string="Project Estimates" />
+                </button>
+            </div>
+
+        </field>
+    </record>
+
+</odoo>
