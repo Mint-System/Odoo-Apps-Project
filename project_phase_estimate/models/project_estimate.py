@@ -27,8 +27,8 @@ class ProjectEstimate(models.Model):
                 ('project_id', '=', estimate.project_id.id),
             ])
 
-    planned_date_begin = fields.Datetime('Start date')
-    planned_date_end = fields.Datetime('End date')
+    planned_date_begin = fields.Datetime('Start Date')
+    planned_date_end = fields.Datetime('End Date')
 
     planned_hours = fields.Float()
     effective_hours = fields.Float(compute='_compute_effective_hours', compute_sudo=True, store=False)

@@ -6,6 +6,7 @@
         <field name="model">project.estimate</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="project_id" />
                 <field name="phase_id" />
                 <field name="planned_date_begin" optional="show" />
