@@ -6,7 +6,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
         <field name="context">{'all_task': 1}</field>
-        <field name="search_view_id" ref="project.view_task_search_form_extended"/>
+        <field name="search_view_id" ref="project.view_task_search_form"/>
     </record>
 
     <menuitem name="All Tasks" id="menu_project_task_all" parent="project.menu_main_pm"
