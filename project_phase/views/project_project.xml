@@ -6,7 +6,7 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project" />
         <field name="arch" type="xml">
-            <button name="%(project.project_collaborator_action)d" position="after">
+            <button name="project_update_all_action" position="after">
                 <button class="oe_stat_button" name="action_project_phase" type="object"
                     icon="fa-tasks" attrs="{'invisible': [('project_phase_count', '=', 0)]}">
                     <field name="project_phase_count" widget="statinfo" string="Phases" />
@@ -25,5 +25,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>

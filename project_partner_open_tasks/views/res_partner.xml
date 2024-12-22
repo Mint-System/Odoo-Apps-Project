@@ -8,10 +8,10 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='my_tasks']" position='after'>
                 <filter string="Open Tasks" name="open_task" domain="[('stage_id.is_done', '=', False)]"/>
-            </xpath>            
+            </xpath>
         </field>
     </record> -->
-    
+
     <record id="project_open_task_action_from_partner" model="ir.actions.act_window">
         <field name="name">Open Tasks</field>
         <field name="res_model">project.task</field>

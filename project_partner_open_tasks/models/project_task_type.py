@@ -1,7 +1,7 @@
-from odoo import api, fields, models, _, tools
+from odoo import models
 
 
 class ProjectType(models.Model):
-    _inherit = 'project.task.type'
+    _inherit = "project.task.type"
 
     # is_done = fields.Boolean()
