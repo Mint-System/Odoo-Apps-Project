@@ -3,7 +3,7 @@
     "summary": """
         Adds smart button with dependency counter to task from.
     """,
-    "author": "Mint System GmbH, Odoo Community Association (OCA)",
+    "author": "Mint System GmbH",
     "website": "https://www.mint-system.ch",
     "category": "Project",
     "version": "14.0.1.0.0",
