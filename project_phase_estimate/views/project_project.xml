@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="project.edit_project" />
         <field name="arch" type="xml">
             
-            <page name="description" position="before">
+            <page name="description" position="after">
                 <page name="project_estimates" string="Project Estimates">
                     <field name="estimate_ids" nolabel="1" context="{'default_project_id': active_id}">
                         <tree editable="bottom">
