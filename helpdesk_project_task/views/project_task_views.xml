@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="project_task_view_form_inherit_helpdesk_ticket" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.helpdesk.ticket</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_helpdesk_tickets"
+                    attrs="{'invisible': [('helpdesk_ticket_count', '=', 0)]}"
+                    icon="fa-life-ring"
+                >
+                    <field
+                        name="helpdesk_ticket_count"
+                        widget="statinfo"
+                        string="Tickets"
+                    />
+                </button>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Tickets" name="helpdesk_tickets">
+                        <field name="helpdesk_ticket_ids" />
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record
+        id="project_task_action_view_helpdesk_tickets"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Helpdesk Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('project_task_ids', 'in', active_id)]</field>
+    </record>
+</odoo>

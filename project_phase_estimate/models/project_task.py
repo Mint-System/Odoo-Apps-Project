@@ -9,12 +9,8 @@ class Task(models.Model):
     _inherit = "project.task"
 
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
-    estimate_id = fields.Many2one(
-        "project.estimate", string="Project Estimate", compute="_compute_estimate_id"
-    )
-    estimate_progress = fields.Float(
-        related="estimate_id.progress", string="Estimate Progress"
-    )
+    estimate_id = fields.Many2one("project.estimate", string="Project Estimate", compute="_compute_estimate_id")
+    estimate_progress = fields.Float(related="estimate_id.progress", string="Estimate Progress")
 
     @api.depends("phase_id")
     def _compute_estimate_id(self):

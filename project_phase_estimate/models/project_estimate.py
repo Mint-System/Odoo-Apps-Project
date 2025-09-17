@@ -16,9 +16,7 @@ class ProjectEstimate(models.Model):
     sequence = fields.Integer()
     project_id = fields.Many2one("project.project", string="Project")
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
-    task_ids = fields.Many2many(
-        "project.task", compute="_compute_task_ids", store=False
-    )
+    task_ids = fields.Many2many("project.task", compute="_compute_task_ids", store=False)
 
     _sql_constraints = [
         (
@@ -42,18 +40,14 @@ class ProjectEstimate(models.Model):
     planned_date_end = fields.Datetime("End Date")
 
     planned_hours = fields.Float()
-    effective_hours = fields.Float(
-        compute="_compute_effective_hours", compute_sudo=True, store=False
-    )
+    effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=False)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=False)
     progress = fields.Float(compute="_compute_progress_hours", store=False)
 
     @api.depends("task_ids")
     def _compute_effective_hours(self):
         for estimate in self:
-            estimate.effective_hours = sum(
-                estimate.task_ids.timesheet_ids.mapped("unit_amount")
-            )
+            estimate.effective_hours = sum(estimate.task_ids.timesheet_ids.mapped("unit_amount"))
 
     @api.depends("effective_hours", "planned_hours")
     def _compute_remaining_hours(self):
@@ -74,8 +68,6 @@ class ProjectEstimate(models.Model):
                 ):
                     estimate.progress = 100
                 else:
-                    estimate.progress = round(
-                        100.0 * estimate.effective_hours / estimate.planned_hours, 2
-                    )
+                    estimate.progress = round(100.0 * estimate.effective_hours / estimate.planned_hours, 2)
             else:
                 estimate.progress = 0.0

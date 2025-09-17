@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <!-- <record id="view_open_task_search_form_extended" model="ir.ui.view">
@@ -16,7 +16,7 @@
         <field name="name">Open Tasks</field>
         <field name="res_model">project.task</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="search_view_id" ref="project.view_task_search_form_extended"/>
+        <field name="search_view_id" ref="project.view_task_search_form_extended" />
     </record>
 
     <record id="view_partner_form" model="ir.ui.view">
@@ -24,12 +24,18 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <button name="%(project.project_task_action_from_partner)d" position="replace">
-                <button class="oe_stat_button" type="action"
+            <button
+                name="%(project.project_task_action_from_partner)d"
+                position="replace"
+            >
+                <button
+                    class="oe_stat_button"
+                    type="action"
                     name="%(project_open_task_action_from_partner)d"
                     groups="project.group_project_user"
                     context="{'search_default_partner_id': active_id, 'search_default_open_tasks': True, 'default_partner_id': active_id}"
-                    icon="fa-tasks">
+                    icon="fa-tasks"
+                >
                     <field string="Tasks" name="task_open_count" widget="statinfo" />
                 </button>
             </button>

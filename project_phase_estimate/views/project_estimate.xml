@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record id="project_estimate_tree" model="ir.ui.view">
@@ -6,7 +6,7 @@
         <field name="model">project.estimate</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
-                <field name="sequence" widget="handle"/>
+                <field name="sequence" widget="handle" />
                 <field name="project_id" />
                 <field name="phase_id" />
                 <field name="planned_date_begin" optional="show" />
@@ -24,11 +24,19 @@
         <field name="model">project.estimate</field>
         <field name="arch" type="xml">
             <search string="Search Project Estimate">
-                <field name="project_id" string="Project"/>
-                <field name="phase_id" string="Task Phase"/>
+                <field name="project_id" string="Project" />
+                <field name="phase_id" string="Task Phase" />
                 <group expand="0" string="Group By">
-                    <filter string="Project" name="project" context="{'group_by': 'project_id'}"/>
-                    <filter string="Task Phase" name="phase" context="{'group_by': 'phase_id'}"/>
+                    <filter
+                        string="Project"
+                        name="project"
+                        context="{'group_by': 'project_id'}"
+                    />
+                    <filter
+                        string="Task Phase"
+                        name="phase"
+                        context="{'group_by': 'phase_id'}"
+                    />
                 </group>
             </search>
         </field>
@@ -42,7 +50,11 @@
         <field name="view_id" ref="project_estimate_tree" />
     </record>
 
-    <menuitem id="menu_action_project_estimate_tree" name="Project Estimates"
-        action="action_project_estimate_tree" parent="project_phase.menu_project_phases"
-        sequence="2" />
+    <menuitem
+        id="menu_action_project_estimate_tree"
+        name="Project Estimates"
+        action="action_project_estimate_tree"
+        parent="project_phase.menu_project_phases"
+        sequence="2"
+    />
 </odoo>

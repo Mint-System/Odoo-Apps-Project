@@ -8,15 +8,11 @@ _logger = logging.getLogger(__name__)
 class ProjectProject(models.Model):
     _inherit = "project.project"
 
-    project_phase_count = fields.Integer(
-        "Job Note", compute="_compute_get_project_phase_count"
-    )
+    project_phase_count = fields.Integer("Job Note", compute="_compute_get_project_phase_count")
 
     def _compute_get_project_phase_count(self):
         for project_phase in self:
-            project_phase_ids = self.env["project.task.phase"].search(
-                [("project_id", "=", project_phase.id)]
-            )
+            project_phase_ids = self.env["project.task.phase"].search([("project_id", "=", project_phase.id)])
             project_phase.project_phase_count = len(project_phase_ids)
 
     def action_project_phase(self):
@@ -34,9 +30,7 @@ class ReportProjectTaskUser(models.Model):
     _inherit = "report.project.task.user"
     _description = "Tasks Analysis"
 
-    phase_id = fields.Many2one(
-        "project.task.phase", string="Project Phase", readonly=True
-    )
+    phase_id = fields.Many2one("project.task.phase", string="Project Phase", readonly=True)
 
     def _select(self):
         select_str = """

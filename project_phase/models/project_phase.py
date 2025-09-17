@@ -25,9 +25,7 @@ class ProjectPhase(models.Model):
         string="Company",
         default=lambda self: self.env["res.company"]._company_default_get(),
     )
-    user_id = fields.Many2one(
-        "res.users", string="Assignees", default=lambda self: self.env.uid
-    )
+    user_id = fields.Many2one("res.users", string="Assignees", default=lambda self: self.env.uid)
     task_ids = fields.One2many("project.task", "phase_id")
     task_count = fields.Integer(compute="_compute_get_task", string="Count")
     notes = fields.Text()

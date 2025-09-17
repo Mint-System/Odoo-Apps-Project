@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record id="view_task_tree" model="ir.ui.view">
@@ -32,8 +32,13 @@
                 <field name="phase_id" />
             </field>
             <filter position="after">
-                <filter string="Phase" name="group_phase_id" icon="terp-folder-violet" domain="[]"
-                    context="{'group_by':'phase_id'}" />
+                <filter
+                    string="Phase"
+                    name="group_phase_id"
+                    icon="terp-folder-violet"
+                    domain="[]"
+                    context="{'group_by':'phase_id'}"
+                />
             </filter>
         </field>
     </record>

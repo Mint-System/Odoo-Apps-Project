@@ -9,9 +9,7 @@ class ProjectPhase(models.Model):
     _inherit = "project.task.phase"
 
     estimate_ids = fields.One2many("project.estimate", "phase_id")
-    estimate_count = fields.Integer(
-        compute="_compute_get_estimate", string="Estimate Count"
-    )
+    estimate_count = fields.Integer(compute="_compute_get_estimate", string="Estimate Count")
 
     def action_project_estimate(self):
         self.ensure_one()
