@@ -21,13 +21,11 @@
                 </button>
             </xpath>
 
-            <xpath expr="//sheet" position="inside">
-                <notebook>
-                    <page string="Tickets" name="helpdesk_tickets">
-                        <field name="helpdesk_ticket_ids" />
-                    </page>
-                </notebook>
-            </xpath>
+            <notebook position="inside">
+                <page string="Tickets" name="helpdesk_tickets">
+                    <field name="helpdesk_ticket_ids" />
+                </page>
+            </notebook>
         </field>
     </record>
 
