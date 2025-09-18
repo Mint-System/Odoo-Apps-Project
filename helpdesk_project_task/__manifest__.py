@@ -9,7 +9,7 @@
     "category": "Helpdesk",
     "version": "16.0.1.0.0",
     "license": "OPL-1",
-    "depends": ["helpdesk", "project"],
+    "depends": ["helpdesk_timesheet"],
     "data": [
         "views/helpdesk_ticket_views.xml",
         "views/project_task_views.xml",

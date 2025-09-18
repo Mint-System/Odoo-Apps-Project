@@ -51,7 +51,7 @@ function install() {
     echo "Setup venv and install python dependencies"
     uv venv env
     source env/bin/activate
-    uv pip install pre-commit rst2html5
+    uv pip install pre-commit git+https://github.com/OCA/maintainer-tools
 }
 
 function lint() {

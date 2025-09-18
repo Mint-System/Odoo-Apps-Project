@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="helpdesk_ticket_view_form_inherit_project_task" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.form.inherit.project.task</field>
+        <field
+            name="name"
+        >helpdesk_project_task.helpdesk_ticket_view_form_inherit_project_task</field>
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
         <field name="arch" type="xml">
@@ -16,7 +18,22 @@
                     <field name="project_task_count" widget="statinfo" string="Tasks" />
                 </button>
             </xpath>
+        </field>
+    </record>
 
+    <record
+        id="helpdesk_ticket_view_form_inherit_helpdesk_timesheet"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >helpdesk_project_task.helpdesk_ticket_view_form_inherit_helpdesk_timesheet</field>
+        <field name="model">helpdesk.ticket</field>
+        <field
+            name="inherit_id"
+            ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet"
+        />
+        <field name="arch" type="xml">
             <notebook position="inside">
                     <page string="Tasks" name="project_tasks">
                         <field name="project_task_ids" />
@@ -24,6 +41,7 @@
             </notebook>
         </field>
     </record>
+
 
     <record
         id="helpdesk_ticket_action_view_project_tasks"
