@@ -17,13 +17,11 @@
                 </button>
             </xpath>
 
-            <xpath expr="//sheet" position="inside">
-                <notebook>
+            <notebook position="inside">
                     <page string="Tasks" name="project_tasks">
                         <field name="project_task_ids" />
                     </page>
-                </notebook>
-            </xpath>
+            </notebook>
         </field>
     </record>
 
