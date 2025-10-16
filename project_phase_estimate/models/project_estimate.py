@@ -29,11 +29,15 @@ class ProjectEstimate(models.Model):
     @api.depends("project_id", "phase_id", "phase_id.task_ids")
     def _compute_task_ids(self):
         for estimate in self:
-            estimate.task_ids = self.env["project.task"].search(
-                [
-                    ("phase_id", "=", estimate.phase_id.id),
-                    ("project_id", "=", estimate.project_id.id),
-                ]
+            estimate.task_ids = (
+                self.env["project.task"]
+                .with_context(active_test=False)
+                .search(
+                    [
+                        ("phase_id", "=", estimate.phase_id.id),
+                        ("project_id", "=", estimate.project_id.id),
+                    ]
+                )
             )
 
     planned_date_begin = fields.Datetime("Start Date")

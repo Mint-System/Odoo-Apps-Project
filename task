@@ -17,8 +17,6 @@ function help-table() {
     printf "$COLUMN" "install" "" "Setup the local environment."
     printf "$COLUMN" "lint" "" "Run pre-commit."
     printf "$COLUMN" "docs" "" "Update index.html."
-    printf "$COLUMN" "source" "" "Source the Python virtual env."
-    printf "$COLUMN" "version" "" "Show version of required tools."
 }
 
 function help() {
@@ -42,10 +40,6 @@ if [ -d "$HOME/taskfile.build/bin" ]; then
         fi
     done
 fi
-
-function version() {
-    uv --version
-}
 
 function install() {
     echo "Setup venv and install python dependencies"
