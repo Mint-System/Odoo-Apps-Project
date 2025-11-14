@@ -6,11 +6,9 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project" />
         <field name="arch" type="xml">
-
             <field name="label_tasks" position="before">
-                <field name="code" />
+                <field name="key" />
             </field>
-
         </field>
     </record>
 
@@ -21,11 +19,9 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.project_project_view_form_simplified" />
         <field name="arch" type="xml">
-
             <field name="name" position="after">
                 <field name="type_id" class="oe_inline" />
             </field>
-
         </field>
     </record>
 
@@ -34,15 +30,12 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project" />
         <field name="arch" type="xml">
-
             <field name="name" position="before">
-                <field name="code" />
+                <field name="key" />
             </field>
-
             <field name="name" position="after">
                 <field name="type_id" />
             </field>
-
         </field>
     </record>
 
@@ -51,14 +44,12 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_kanban" />
         <field name="arch" type="xml">
-
             <xpath expr="/kanban/field[@name='tag_ids']" position="after">
-                <field name="code" />
+                <field name="key" />
             </xpath>
             <xpath expr="//div[hasclass('o_primary')]/span[1]/t" position="before">
-                [<t t-esc="record.code.value" />]
+                [<t t-esc="record.key.value" />]
             </xpath>
-
         </field>
     </record>
 
@@ -67,13 +58,11 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_project_filter" />
         <field name="arch" type="xml">
-
             <field name="name" position="attributes">
                 <attribute
                     name="filter_domain"
-                >['|', ('name', 'ilike', self),('code', 'ilike', self)]</attribute>
+                >['|', ('name', 'ilike', self),('key', 'ilike', self)]</attribute>
             </field>
-
         </field>
     </record>
 

@@ -4,7 +4,7 @@
         Add project menu to show all tasks.
     """,
     "author": "Mint System GmbH",
-    "website": "https://www.mint-system.ch",
+    "website": "https://www.mint-system.ch/",
     "category": "Project",
     "version": "17.0.1.0.2",
     "license": "AGPL-3",

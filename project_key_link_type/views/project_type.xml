@@ -6,11 +6,9 @@
         <field name="model">project.type</field>
         <field name="inherit_id" ref="project_type.project_type_form" />
         <field name="arch" type="xml">
-
-            <field name="code" position="after">
+            <field name="key" position="after">
                 <field name="sequence_id" />
             </field>
-
         </field>
     </record>
 
