@@ -17,22 +17,6 @@ class Project(models.Model):
         copy=False,
     )
 
-    def name_get(self):
-        """Set proejct display name."""
-        res = []
-        for record in self:
-            res.append((record.id, "[%s] %s" % (record.key, record.name)))
-        return res
-
-    @api.model
-    def name_search(self, name="", args=None, operator="ilike", limit=100):
-        args = args or []
-        domain = []
-        if name:
-            domain = OR([[("name", "ilike", name)], [("key", "ilike", name)]])
-        records = self.search(AND([args, domain]), limit=limit)
-        return records.name_get()
-
     def _set_key(self, vals):
         """
         Create project sequence from type.
@@ -49,6 +33,7 @@ class Project(models.Model):
         if ((vals.get("key") or self.key) == "/") and not self.is_template:
             self._set_key(vals)
         res = super().write(vals)
+
         # Update analytic account
         self._update_analytic_account()
         return res
@@ -60,6 +45,7 @@ class Project(models.Model):
         """
         if vals.get("key", "/") == "/":
             self._set_key(vals)
+        
         # Setup and update analytic account
         analytic_account = self._create_analytic_account_from_values(vals)
         vals["analytic_account_id"] = analytic_account.id
