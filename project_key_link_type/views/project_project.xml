@@ -8,8 +8,10 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.project_project_view_form_simplified" />
         <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="type_id" class="oe_inline" />
+            <field name="user_id" position="after">
+                <group>
+                    <field name="type_id" />
+                </group>
             </field>
         </field>
     </record>
