@@ -6,6 +6,7 @@
         <field name="model">project.task.phase</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="project_id" />
                 <field name="user_id" />
