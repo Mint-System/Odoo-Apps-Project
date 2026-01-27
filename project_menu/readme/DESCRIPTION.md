@@ -1,0 +1,1 @@
+Add each project as menu entry.
