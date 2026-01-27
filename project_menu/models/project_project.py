@@ -9,6 +9,7 @@ _logger = logging.getLogger(__name__)
 class ProjectProject(models.Model):
     _inherit = "project.project"
     menu_id = fields.Many2one("ir.ui.menu", string="Generated Menu", ondelete="set null")
+    action_id = fields.Many2one("ir.actions.act_window", string="Generated Action", ondelete="set null")
 
     def _get_menu_name(self, lang=None):
         """
@@ -26,8 +27,7 @@ class ProjectProject(models.Model):
         Create or update an action for viewing tasks of this project.
         The action is localized per language and linked to project tasks.
         """
-        action = self.env["ir.actions.act_window"].with_context(lang=lang or self.env.lang)
-        action_id = action.search([("name", "=", name)], limit=1)
+        action_model = self.env["ir.actions.act_window"].with_context(lang=lang or self.env.lang)
         vals = {
             "name": name,
             "res_model": "project.task",
@@ -35,80 +35,74 @@ class ProjectProject(models.Model):
             "domain": "[('project_id', '=', %s)]" % self.id,
             "context": "{ 'default_project_id': %s, 'search_default_my_tasks': True }" % self.id,
         }
-        if not action_id:
-            action_id = action.create(vals)
+        if not self.action_id:
+            action_id = action_model.create(vals)
             _logger.info("Created action [%s]: %s (ID: %s)", lang or self.env.lang, name, action_id.id)
+            self.action_id = action_id
         else:
-            action_id.write(vals)
-            _logger.info("Updated action [%s]: %s (ID: %s)", lang or self.env.lang, name, action_id.id)
-        return action_id
+            # Update existing action with localized name
+            self.action_id.with_context(lang=lang or self.env.lang).write(vals)
+            _logger.info("Updated action [%s]: %s (ID: %s)", lang or self.env.lang, name, self.action_id.id)
+        return self.action_id
 
     def _create_or_update_menu(self, name, action_id, lang=None):
         """
         Create or update a menu entry for this project.
         Uses the existing menu_id stored on the project record if available.
         """
-        menu = self.env["ir.ui.menu"].with_context(lang=lang or self.env.lang)
-        menu_id = self.menu_id
-        parent_menu_id = self._get_parent_menu_id()
+        menu_model = self.env["ir.ui.menu"].with_context(lang=lang or self.env.lang)
         vals = {
             "name": name,
             "action": "ir.actions.act_window,%s" % action_id.id,
-            "parent_id": parent_menu_id,
+            "parent_id": self._get_parent_menu_id(),
             "sequence": self.id,
         }
-        if not menu_id:
-            menu_id = menu.create(vals)
+        if not self.menu_id:
+            menu_id = menu_model.create(vals)
             _logger.info("Created menu [%s]: %s (ID: %s)", lang or self.env.lang, name, menu_id.id)
+            self.menu_id = menu_id
         else:
-            menu_id.write(vals)
-            _logger.info("Updated menu [%s]: %s (ID: %s)", lang or self.env.lang, name, menu_id.id)
-        return menu_id
+            # Update existing menu with localized name
+            self.menu_id.with_context(lang=lang or self.env.lang).write(vals)
+            _logger.info("Updated menu [%s]: %s (ID: %s)", lang or self.env.lang, name, self.menu_id.id)
+        return self.menu_id
 
     def _get_parent_menu_id(self):
         """
         Determine the parent menu ID based on configuration settings.
         Returns the group stage menu if enabled, otherwise the default projects menu.
         """
-        settings = self.env["res.config.settings"].sudo().get_values()
-        if settings.get("group_project_stages"):
+        if self.env.user.has_group("project.group_project_stages"):
             return self.env.ref("project.menu_projects_group_stage").id
         return self.env.ref("project.menu_projects").id
 
     def _remove_menu_and_action(self, lang=None):
         """
         Remove the menu and action associated with this project.
-        Uses the stored menu_id to locate the menu and its linked action.
+        Uses the stored menu_id and action_id to locate and unlink them.
         """
         for project in self:
-            name = project._get_menu_name(lang=lang)
-            menu = self.env["ir.ui.menu"].with_context(lang=lang or self.env.lang)
-            # Use the stored menu_id instead of searching by name
-            menu_id = project.menu_id
-            if menu_id:
-                # Get the action linked to this menu
-                action = menu_id.action
-                if action:
-                    action.unlink()
-                    _logger.info("Removed action [%s]: %s", lang or self.env.lang, name)
-                menu_id.unlink()
-                _logger.info("Removed menu [%s]: %s", lang or self.env.lang, name)
+            if project.menu_id:
+                menu_name = project._get_menu_name(lang=lang)
+                project.menu_id.unlink()
+                _logger.info("Removed menu [%s]: %s", lang or self.env.lang, menu_name)
+                project.menu_id = False
+            if project.action_id:
+                action_name = project._get_menu_name(lang=lang)
+                project.action_id.unlink()
+                _logger.info("Removed action [%s]: %s", lang or self.env.lang, action_name)
+                project.action_id = False
 
-    def _sync_menu_and_action_for_languages(self, langs=None):
+    def _sync_menu_and_action_for_languages(self, lang_codes=None):
         """
         Synchronize menu and action entries across all specified languages.
-        Creates or updates entries for each language and stores the first menu as menu_id.
+        Creates or updates entries for each language.
         """
-        if langs is None:
-            langs = self.env["res.lang"].search([]).mapped("code")
-        first_menu = None
-        for lang in langs:
-            name = self._get_menu_name(lang=lang)
-            action = self._create_or_update_action(name, lang=lang)
-            menu = self._create_or_update_menu(name, action, lang=lang)
-            if first_menu is None:
-                first_menu = menu
-        self.menu_id = first_menu
+        lang_codes = lang_codes or self.env["res.lang"].search([]).mapped("code")
+        for lang_code in lang_codes:
+            name = self._get_menu_name(lang=lang_code)
+            action_id = self._create_or_update_action(name, lang=lang_code)
+            menu_id = self._create_or_update_menu(name, action_id, lang=lang_code)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -130,7 +124,6 @@ class ProjectProject(models.Model):
                     project._sync_menu_and_action_for_languages()
                 elif not project.active and "active" in vals:
                     project._remove_menu_and_action()
-                    project.menu_id = False
         return super().write(vals)
 
     def toggle_active(self):
@@ -141,7 +134,6 @@ class ProjectProject(models.Model):
         for project in self:
             if not project.active:
                 project._remove_menu_and_action()
-                project.menu_id = False
             else:
                 project._sync_menu_and_action_for_languages()
         return res
