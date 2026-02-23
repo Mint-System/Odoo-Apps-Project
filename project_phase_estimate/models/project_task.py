@@ -15,11 +15,23 @@ class Task(models.Model):
     @api.depends("phase_id")
     def _compute_estimate_id(self):
         for task in self:
-            estimate_id = self.env["project.estimate"].search(
-                [
-                    ("phase_id", "=", task.phase_id.id),
-                    ("project_id", "=", task.project_id.id),
-                ]
-            )[:1]
+            if task.phase_id and task.project_id:
+                estimate_id = self.env["project.estimate"].search(
+                    [
+                        ("phase_id", "=", task.phase_id.id),
+                        ("project_id", "=", task.project_id.id),
+                    ]
+                )[:1]
 
-            task.estimate_id = estimate_id if estimate_id else 0.0
+                if not estimate_id:
+                    estimate_id = self.env["project.estimate"].create(
+                        {
+                            "project_id": task.project_id.id,
+                            "phase_id": task.phase_id.id,
+                            "planned_hours": 0.0,
+                        }
+                    )
+
+                task.estimate_id = estimate_id
+            else:
+                task.estimate_id = False

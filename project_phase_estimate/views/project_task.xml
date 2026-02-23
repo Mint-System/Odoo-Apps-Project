@@ -6,6 +6,9 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='phase_id']" position="attributes">
+                <attribute name="context">{'default_project_id': project_id}</attribute>
+            </xpath>
             <xpath expr="//field[@name='phase_id']" position="after">
                 <field
                     name="estimate_progress"

@@ -19,6 +19,7 @@ class ProjectPhase(models.Model):
             "view_mode": "tree",
             "res_model": "project.estimate",
             "domain": [("phase_id", "=", self.id)],
+            "context": {"default_project_id": self.env.context.get("default_project_id")},
         }
 
     @api.depends("estimate_ids")
