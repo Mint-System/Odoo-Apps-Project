@@ -1,0 +1,9 @@
+- Go settings page of project "Renovieren"
+- Enable "Allow Estimate"
+- Add a timesheet entry to a task of this project
+- Link the task to project phase "Implementation"
+- Ensure effective hours are shown in estimate
+- Go to settings page and invoice policy to validated timesheets
+- Ensure the effective hours is zero
+- Validate the timesheet entry
+- Ensure effective hours is shown

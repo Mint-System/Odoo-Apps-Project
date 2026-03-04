@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
+    <record id="view_edit_project_inherit_form" model="ir.ui.view">
+        <field name="name">project_phase_estimate.view_edit_project_inherit_form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="sale_project.view_edit_project_inherit_form" />
+        <field name="arch" type="xml">
+
+            <group name="group_sales_invoicing" position="inside">
+                    <div>
+                        <div class="o_setting_box" id="allow_estimate_container">
+                            <div class="o_setting_left_pane">
+                                <field name="allow_estimate" />
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="allow_estimate" />
+                                <div class="text-muted" id="allow_estimate_setting">
+                                    Add estimates linked to phases to this project.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </group>
+
+        </field>
+    </record>
+
+
     <record id="edit_project" model="ir.ui.view">
         <field name="name">project_phase_estimate.edit_project</field>
         <field name="model">project.project</field>
@@ -8,7 +34,11 @@
         <field name="arch" type="xml">
 
             <page name="description" position="after">
-                <page name="project_estimates" string="Project Estimates">
+                <page
+                    attrs="{'invisible': [('allow_estimate','=',False)]}"
+                    name="project_estimates"
+                    string="Project Estimates"
+                >
                     <field
                         name="estimate_ids"
                         nolabel="1"
