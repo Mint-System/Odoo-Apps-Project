@@ -1,6 +1,6 @@
 import logging
 
-from odoo import api, fields, models
+from odoo import fields, models
 from odoo.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
@@ -16,7 +16,6 @@ class ProjectEstimate(models.Model):
     sequence = fields.Integer()
     project_id = fields.Many2one("project.project", string="Project")
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
-    task_ids = fields.Many2many("project.task", compute="_compute_task_ids", store=False)
 
     _sql_constraints = [
         (
@@ -26,20 +25,6 @@ class ProjectEstimate(models.Model):
         ),
     ]
 
-    @api.depends("project_id", "phase_id", "phase_id.task_ids")
-    def _compute_task_ids(self):
-        for estimate in self:
-            estimate.task_ids = (
-                self.env["project.task"]
-                .with_context(active_test=False)
-                .search(
-                    [
-                        ("phase_id", "=", estimate.phase_id.id),
-                        ("project_id", "=", estimate.project_id.id),
-                    ]
-                )
-            )
-
     planned_date_begin = fields.Datetime("Start Date")
     planned_date_end = fields.Datetime("End Date")
 
@@ -48,21 +33,28 @@ class ProjectEstimate(models.Model):
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=False)
     progress = fields.Float(compute="_compute_progress_hours", store=False)
 
-    @api.depends("task_ids")
     def _compute_effective_hours(self):
         invoiced_timesheet = self.env["ir.config_parameter"].sudo().get_param("sale.invoiced_timesheet")
         for estimate in self:
-            effective_hours = estimate.task_ids.timesheet_ids
+            task_ids = (
+                self.with_context(active_test=False)
+                .env["project.task"]
+                .search(
+                    [
+                        ("phase_id", "=", estimate.phase_id.id),
+                        ("project_id", "=", estimate.project_id.id),
+                    ]
+                )
+            )
+            effective_hours = task_ids.timesheet_ids
             if invoiced_timesheet == "approved":
                 effective_hours = effective_hours.filtered(lambda line: line.validated)
             estimate.effective_hours = sum(effective_hours.mapped("unit_amount"))
 
-    @api.depends("effective_hours", "planned_hours")
     def _compute_remaining_hours(self):
         for estimate in self:
             estimate.remaining_hours = estimate.planned_hours - estimate.effective_hours
 
-    @api.depends("effective_hours", "planned_hours")
     def _compute_progress_hours(self):
         for estimate in self:
             if estimate.planned_hours > 0.0:

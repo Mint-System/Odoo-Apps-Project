@@ -9,5 +9,4 @@
     <record id="project.project_1_task_6" model="project.task">
         <field name="phase_id" ref="project_phase.project_task_phase_demo_1" />
     </record>
-
 </odoo>
