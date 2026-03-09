@@ -34,7 +34,6 @@ class ProjectEstimate(models.Model):
     progress = fields.Float(compute="_compute_progress_hours", store=False)
 
     def _compute_effective_hours(self):
-        invoiced_timesheet = self.env["ir.config_parameter"].sudo().get_param("sale.invoiced_timesheet")
         for estimate in self:
             task_ids = (
                 self.with_context(active_test=False)
@@ -47,7 +46,7 @@ class ProjectEstimate(models.Model):
                 )
             )
             effective_hours = task_ids.timesheet_ids
-            if invoiced_timesheet == "approved":
+            if self.env.context.get("validated_hours_only", False):
                 effective_hours = effective_hours.filtered(lambda line: line.validated)
             estimate.effective_hours = sum(effective_hours.mapped("unit_amount"))
 

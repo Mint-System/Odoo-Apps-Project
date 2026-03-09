@@ -1,0 +1,1 @@
+Estimate planned hours by project and phases.
