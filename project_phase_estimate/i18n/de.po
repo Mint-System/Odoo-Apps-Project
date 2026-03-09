@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 13:05+0000\n"
-"PO-Revision-Date: 2026-02-23 13:05+0000\n"
+"POT-Creation-Date: 2026-03-09 09:57+0000\n"
+"PO-Revision-Date: 2026-03-09 09:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_phase_estimate.field_project_estimate__active
 msgid "Active"
 msgstr "Aktiv"
+
+#. module: project_phase_estimate
+#: model:ir.model.fields,help:project_phase_estimate.field_project_project__allow_estimate
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.view_edit_project_inherit_form
+msgid "Add estimates linked to phases to this project."
+msgstr "Fügen Sie diesem Projekt Schätzungen hinzu, die mit Phasen verknüpft sind."
+
+#. module: project_phase_estimate
+#: model:ir.model.fields,field_description:project_phase_estimate.field_project_project__allow_estimate
+msgid "Allow Estimate"
+msgstr "Schätzung erlauben"
 
 #. module: project_phase_estimate
 #: model:ir.model.fields,field_description:project_phase_estimate.field_project_estimate__create_uid
@@ -87,6 +98,11 @@ msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
 
 #. module: project_phase_estimate
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.project_project_view_kanban_inherit_sale_timesheet_so_button
+msgid "Phase Estimates"
+msgstr "Phasenschätzungen"
+
+#. module: project_phase_estimate
 #: model:ir.model.fields,field_description:project_phase_estimate.field_project_estimate__planned_hours
 msgid "Planned Hours"
 msgstr "Geplante Stunden"
@@ -124,6 +140,12 @@ msgid "Project Phase"
 msgstr "Projektphase"
 
 #. module: project_phase_estimate
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.edit_project
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.project_estimate_tree
+msgid "Project Progress (%)"
+msgstr "Projektfortschritt (%)"
+
+#. module: project_phase_estimate
 #: model:ir.model.fields,field_description:project_phase_estimate.field_project_estimate__remaining_hours
 msgid "Remaining Hours"
 msgstr "Verbleibende Stunden"
@@ -145,7 +167,6 @@ msgstr "Startdatum"
 
 #. module: project_phase_estimate
 #: model:ir.model,name:project_phase_estimate.model_project_task
-#: model:ir.model.fields,field_description:project_phase_estimate.field_project_estimate__task_ids
 msgid "Task"
 msgstr "Aufgabe"
 
@@ -156,6 +177,19 @@ msgid "Task Phase"
 msgstr "Aufgabenphase"
 
 #. module: project_phase_estimate
-#: model:ir.model.constraint,message:project_phase_estimate.constraint_project_estimate_project_phase_unique
-msgid "The combination of project and phase must be unique."
-msgstr "Die Kombination aus Projekt und Phase muss einzigartig sein."
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.edit_project
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.project_estimate_tree
+msgid "Total Effective Hours"
+msgstr "Gesamt effektive Stunden"
+
+#. module: project_phase_estimate
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.edit_project
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.project_estimate_tree
+msgid "Total Planned Hours"
+msgstr "Gesamt geplante Stunden"
+
+#. module: project_phase_estimate
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.edit_project
+#: model_terms:ir.ui.view,arch_db:project_phase_estimate.project_estimate_tree
+msgid "Total Remaining Hours"
+msgstr "Gesamt verbleibende Stunden"
