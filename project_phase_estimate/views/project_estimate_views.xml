@@ -67,7 +67,6 @@
         <field name="binding_view_types">tree</field>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="project_estimate_tree" />
-        <field name="context">{"group_by": "project_id"}</field>
     </record>
 
     <menuitem
