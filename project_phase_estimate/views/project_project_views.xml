@@ -90,7 +90,7 @@
                                 name="progress"
                                 widget="progressbar"
                                 optional="show"
-                                sum="Project Progress (%)"
+                                avg="Project Progress (%)"
                             />
                         </tree>
                     </field>
