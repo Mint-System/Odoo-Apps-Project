@@ -14,16 +14,8 @@ class ProjectEstimate(models.Model):
 
     active = fields.Boolean(default=True)
     sequence = fields.Integer()
-    project_id = fields.Many2one("project.project", string="Project")
+    project_id = fields.Many2one("project.project")
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
-
-    _sql_constraints = [
-        (
-            "project_phase_unique",
-            "unique(project_id, phase_id)",
-            "The combination of project and phase must be unique.",
-        ),
-    ]
 
     planned_date_begin = fields.Datetime("Start Date")
     planned_date_end = fields.Datetime("End Date")
@@ -31,7 +23,7 @@ class ProjectEstimate(models.Model):
     planned_hours = fields.Float()
     effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=False)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=False)
-    progress = fields.Float(compute="_compute_progress_hours", store=False)
+    progress = fields.Float(compute="_compute_progress_hours", store=False, group_operator="avg")
 
     def _compute_effective_hours(self):
         for estimate in self:

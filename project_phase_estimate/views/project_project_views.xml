@@ -26,6 +26,25 @@
         </field>
     </record>
 
+    <record
+        id="project_project_view_kanban_inherit_sale_timesheet_so_button"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >project_phase_estimate.project_project_view_kanban_inherit_sale_timesheet_so_button</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban" />
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_manage_view')]" position="inside">
+                <field name="allow_estimate" invisible="1" />
+                <div t-if="record.allow_estimate.raw_value" role="menuitem">
+                    <a name="action_view_estimates" type="object">Phase Estimates</a>
+                </div>
+            </xpath>
+        </field>
+    </record>
 
     <record id="edit_project" model="ir.ui.view">
         <field name="name">project_phase_estimate.edit_project</field>
@@ -50,21 +69,28 @@
                             <field name="phase_id" />
                             <field name="planned_date_begin" optional="show" />
                             <field name="planned_date_end" optional="show" />
-                            <field name="planned_hours" widget="timesheet_uom" />
+                            <field
+                                name="planned_hours"
+                                widget="timesheet_uom"
+                                sum="Total Planned Hours"
+                            />
                             <field
                                 name="effective_hours"
                                 widget="timesheet_uom"
                                 optional="show"
+                                sum="Total Effective Hours"
                             />
                             <field
                                 name="remaining_hours"
                                 widget="timesheet_uom"
                                 optional="show"
+                                sum="Total Remaining Hours"
                             />
                             <field
                                 name="progress"
                                 widget="progressbar"
                                 optional="show"
+                                sum="Project Progress (%)"
                             />
                         </tree>
                     </field>

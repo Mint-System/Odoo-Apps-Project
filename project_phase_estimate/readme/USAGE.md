@@ -1,0 +1,1 @@
+Set context "validated_hours_only" to True if only validated hours must be considered in effective hours calculation.

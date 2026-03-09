@@ -11,10 +11,29 @@
                 <field name="phase_id" />
                 <field name="planned_date_begin" optional="show" />
                 <field name="planned_date_end" optional="show" />
-                <field name="planned_hours" widget="timesheet_uom" />
-                <field name="effective_hours" widget="timesheet_uom" optional="show" />
-                <field name="remaining_hours" widget="timesheet_uom" optional="show" />
-                <field name="progress" widget="progressbar" optional="show" />
+                <field
+                    name="planned_hours"
+                    widget="timesheet_uom"
+                    sum="Total Planned Hours"
+                />
+                <field
+                    name="effective_hours"
+                    widget="timesheet_uom"
+                    optional="show"
+                    sum="Total Effective Hours"
+                />
+                <field
+                    name="remaining_hours"
+                    widget="timesheet_uom"
+                    optional="show"
+                    sum="Total Remaining Hours"
+                />
+                <field
+                    name="progress"
+                    widget="progressbar"
+                    optional="show"
+                    sum="Project Progress (%)"
+                />
             </tree>
         </field>
     </record>
