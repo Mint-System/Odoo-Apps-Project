@@ -45,6 +45,18 @@
             <search string="Search Project Estimate">
                 <field name="project_id" string="Project" />
                 <field name="phase_id" string="Task Phase" />
+                <separator />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+                <filter
+                    string="Planned"
+                    name="planned"
+                    domain="[('planned_hours', '>', 0.0)]"
+                />
+
                 <group expand="0" string="Group By">
                     <filter
                         string="Project"
