@@ -34,6 +34,12 @@
                     optional="show"
                     avg="Project Progress (%)"
                 />
+                <button
+                    name="action_open_timesheets"
+                    string="View Timesheets"
+                    type="object"
+                    icon="fa-clock-o"
+                />
             </tree>
         </field>
     </record>

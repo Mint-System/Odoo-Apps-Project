@@ -25,7 +25,9 @@ class ProjectEstimate(models.Model):
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=True)
     progress = fields.Float(compute="_compute_progress_hours", store=True, group_operator="avg")
 
-    @api.depends("project_id", "phase_id", "phase_id.task_ids", "start_date", "end_date")
+    @api.depends(
+        "project_id", "phase_id", "phase_id.task_ids", "phase_id.task_ids.effective_hours", "start_date", "end_date"
+    )
     def _compute_effective_hours(self):
         for estimate in self:
             task_ids = (
@@ -78,3 +80,29 @@ class ProjectEstimate(models.Model):
                     estimate.progress = round(100.0 * estimate.effective_hours / estimate.planned_hours, 2)
             else:
                 estimate.progress = 100
+
+    def action_open_timesheets(self):
+        self.ensure_one()
+
+        task_ids = self.env["project.task"].search(
+            [
+                ("phase_id", "=", self.phase_id.id),
+                ("project_id", "=", self.project_id.id),
+            ]
+        )
+
+        timesheet_domain = [("task_id", "in", task_ids.ids)]
+        if self.start_date:
+            timesheet_domain.append(("date", ">=", self.start_date))
+        if self.end_date:
+            timesheet_domain.append(("date", "<=", self.end_date))
+        if self.env.context.get("validated_hours_only", False):
+            timesheet_domain.append(("validated", "=", True))
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Timesheets for %s - %s" % (self.project_id.name, self.phase_id.name),
+            "res_model": "account.analytic.line",
+            "domain": timesheet_domain,
+            "view_mode": "tree,form",
+        }
