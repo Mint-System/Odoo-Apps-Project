@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record id="project_task_phase_demo_1" model="project.task.phase">
+    <record id="project_task_phase_implementation" model="project.task.phase">
         <field name="name">Implementation</field>
+    </record>
+
+    <record id="project_task_phase_assembly" model="project.task.phase">
+        <field name="name">Assembly</field>
+    </record>
+
+    <record id="project_task_phase_support" model="project.task.phase">
+        <field name="name">Support</field>
+    </record>
+
+    <record id="project_task_phase_decoration" model="project.task.phase">
+        <field name="name">Decoration</field>
+    </record>
+
+    <record id="project_task_phase_integration" model="project.task.phase">
+        <field name="name">Integration</field>
+    </record>
+
+    <record id="project_task_phase_planning" model="project.task.phase">
+        <field name="name">Planning</field>
     </record>
 </odoo>

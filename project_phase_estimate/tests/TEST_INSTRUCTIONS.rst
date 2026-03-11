@@ -1,9 +1,14 @@
-- Go settings page of project "Renovieren"
-- Enable "Allow Estimate"
-- Add a timesheet entry to a task of this project
-- Link the task to project phase "Implementation"
-- Ensure effective hours are shown in estimate
-- Go to settings page and invoice policy to validated timesheets
-- Ensure the effective hours is zero
-- Validate the timesheet entry
-- Ensure effective hours is shown
+Show estimates:
+
+- Open Project "Forschung & Entwicklung"
+- Ensure estimate "Planning" has -4 remaining hours
+- Sort the remaining hours
+
+Filter hours:
+
+- Set start date today minus 6 days on estimate "Planning"
+- Ensure effective hours is 12
+- Add a second estimate "Planning"
+- Divide planned hours among these estimates
+- Set end date today minus 7 days on new estimate
+- Ensure the sum of remaining hours is -4
