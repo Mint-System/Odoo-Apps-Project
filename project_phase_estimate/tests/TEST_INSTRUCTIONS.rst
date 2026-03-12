@@ -12,3 +12,10 @@ Filter hours:
 - Divide planned hours among these estimates
 - Set end date today minus 7 days on new estimate
 - Ensure the sum of remaining hours is -4
+
+Filter in progress:
+
+- Open project estimates
+- Set past end date to estimate
+- Select filter "In Progress"
+- Ensure estimate is not shown

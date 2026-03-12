@@ -51,18 +51,27 @@
             <search string="Search Project Estimate">
                 <field name="project_id" string="Project" />
                 <field name="phase_id" string="Task Phase" />
-                <separator />
                 <filter
-                    string="Archived"
-                    name="inactive"
-                    domain="[('active', '=', False)]"
+                    string="In Progress"
+                    name="in_progress"
+                    domain="[('is_in_progress', '=', True)]"
                 />
                 <filter
                     string="Planned"
                     name="planned"
                     domain="[('planned_hours', '>', 0.0)]"
                 />
-
+                <separator />
+                <filter
+                    string="Hours Exceeded"
+                    name="hours_exceeded"
+                    domain="[('remaining_hours', '&lt;', 0.0)]"
+                />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
                 <group expand="0" string="Group By">
                     <filter
                         string="Project"

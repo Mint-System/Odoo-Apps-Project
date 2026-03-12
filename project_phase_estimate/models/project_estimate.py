@@ -1,4 +1,5 @@
 import logging
+from datetime import date
 
 from odoo import api, fields, models
 from odoo.tools.float_utils import float_compare
@@ -19,11 +20,34 @@ class ProjectEstimate(models.Model):
 
     start_date = fields.Date(copy=False)
     end_date = fields.Date(copy=False)
+    is_in_progress = fields.Boolean(
+        compute="_compute_is_in_progress",
+        store=True,
+    )
 
     planned_hours = fields.Float()
     effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=True)
     progress = fields.Float(compute="_compute_progress_hours", store=True, group_operator="avg")
+
+    @api.depends("start_date", "end_date")
+    def _compute_is_in_progress(self):
+        today = date.today()
+        for record in self:
+            if not record.start_date and not record.end_date:
+                record.is_in_progress = True
+            elif record.start_date and record.start_date <= today:
+                record.is_in_progress = True
+            elif record.end_date and record.end_date >= today:
+                record.is_in_progress = True
+            else:
+                record.is_in_progress = False
+
+    @api.constrains("start_date", "end_date")
+    def _check_dates(self):
+        for record in self:
+            if record.start_date and record.end_date and record.end_date < record.start_date:
+                raise models.ValidationError("End date cannot be before start date.")
 
     @api.depends(
         "project_id", "phase_id", "phase_id.task_ids", "phase_id.task_ids.effective_hours", "start_date", "end_date"
