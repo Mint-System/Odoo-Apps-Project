@@ -29,6 +29,9 @@ class ProjectEstimate(models.Model):
     effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=True)
     progress = fields.Float(compute="_compute_progress_hours", store=True, group_operator="avg")
+    effective_hours_validated = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
+    remaining_hours_validated = fields.Float(compute="_compute_remaining_hours", store=True)
+    progress_validated = fields.Float(compute="_compute_progress_hours", store=True, group_operator="avg")
 
     @api.depends("start_date", "end_date")
     def _compute_is_in_progress(self):
@@ -66,9 +69,6 @@ class ProjectEstimate(models.Model):
             )
             effective_hours = task_ids.timesheet_ids
 
-            if self.env.context.get("validated_hours_only", False):
-                effective_hours = effective_hours.filtered(lambda line: line.validated)
-
             if estimate.start_date:
                 effective_hours = effective_hours.filtered(lambda line: line.date >= estimate.start_date)
 
@@ -77,33 +77,46 @@ class ProjectEstimate(models.Model):
 
             estimate.effective_hours = sum(effective_hours.mapped("unit_amount"))
 
+            effective_hours_validated = effective_hours.filtered(lambda line: line.validated)
+            estimate.effective_hours_validated = sum(effective_hours_validated.mapped("unit_amount"))
+
     @api.depends("planned_hours", "effective_hours")
     def _compute_remaining_hours(self):
         for estimate in self:
             estimate.remaining_hours = estimate.planned_hours - estimate.effective_hours
+            estimate.remaining_hours_validated = estimate.planned_hours - estimate.effective_hours_validated
 
-    @api.depends("remaining_hours")
-    def _compute_progress_hours(self):
+    @api.model
+    def _calculate_progress(self, planned_hours, effective_hours):
         """
         Compare effective hours with planned hours.
         If planned hours is zero then set progress to 100%.
         When effective hours exceeds planned hours set progress to 100%.
         """
-        for estimate in self:
-            if estimate.planned_hours > 0.0:
-                if (
-                    float_compare(
-                        estimate.effective_hours,
-                        estimate.planned_hours,
-                        precision_digits=2,
-                    )
-                    >= 0
-                ):
-                    estimate.progress = 100
-                else:
-                    estimate.progress = round(100.0 * estimate.effective_hours / estimate.planned_hours, 2)
+        progress = 0
+        if planned_hours > 0.0:
+            if (
+                float_compare(
+                    effective_hours,
+                    planned_hours,
+                    precision_digits=2,
+                )
+                >= 0
+            ):
+                progress = 100
             else:
-                estimate.progress = 100
+                progress = round(100.0 * effective_hours / planned_hours, 2)
+        else:
+            progress = 100
+        return progress
+
+    @api.depends("remaining_hours")
+    def _compute_progress_hours(self):
+        for estimate in self:
+            estimate.progress = self._calculate_progress(estimate.planned_hours, estimate.effective_hours)
+            estimate.progress_validated = self._calculate_progress(
+                estimate.planned_hours, estimate.effective_hours_validated
+            )
 
     def action_open_timesheets(self):
         self.ensure_one()
@@ -120,8 +133,6 @@ class ProjectEstimate(models.Model):
             timesheet_domain.append(("date", ">=", self.start_date))
         if self.end_date:
             timesheet_domain.append(("date", "<=", self.end_date))
-        if self.env.context.get("validated_hours_only", False):
-            timesheet_domain.append(("validated", "=", True))
 
         return {
             "type": "ir.actions.act_window",
