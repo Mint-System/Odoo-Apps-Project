@@ -19,13 +19,11 @@
                 <field
                     name="effective_hours"
                     widget="timesheet_uom"
-                    optional="show"
                     sum="Total Effective Hours"
                 />
                 <field
                     name="remaining_hours"
                     widget="timesheet_uom"
-                    optional="show"
                     sum="Total Remaining Hours"
                 />
                 <field
