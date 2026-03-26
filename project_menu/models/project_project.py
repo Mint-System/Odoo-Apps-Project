@@ -37,12 +37,9 @@ class ProjectProject(models.Model):
         }
         if not self.action_id:
             action_id = action_model.create(vals)
-            _logger.info("Created action [%s]: %s (ID: %s)", lang or self.env.lang, name, action_id.id)
             self.action_id = action_id
         else:
-            # Update existing action with localized name
             self.action_id.with_context(lang=lang or self.env.lang).write(vals)
-            _logger.info("Updated action [%s]: %s (ID: %s)", lang or self.env.lang, name, self.action_id.id)
         return self.action_id
 
     def _create_or_update_menu(self, name, action_id, lang=None):
@@ -59,12 +56,9 @@ class ProjectProject(models.Model):
         }
         if not self.menu_id:
             menu_id = menu_model.create(vals)
-            _logger.info("Created menu [%s]: %s (ID: %s)", lang or self.env.lang, name, menu_id.id)
             self.menu_id = menu_id
         else:
-            # Update existing menu with localized name
             self.menu_id.with_context(lang=lang or self.env.lang).write(vals)
-            _logger.info("Updated menu [%s]: %s (ID: %s)", lang or self.env.lang, name, self.menu_id.id)
         return self.menu_id
 
     def _get_parent_menu_id(self):
@@ -85,12 +79,10 @@ class ProjectProject(models.Model):
             if project.menu_id:
                 menu_name = project._get_menu_name(lang=lang)
                 project.menu_id.unlink()
-                _logger.info("Removed menu [%s]: %s", lang or self.env.lang, menu_name)
                 project.menu_id = False
             if project.action_id:
                 action_name = project._get_menu_name(lang=lang)
                 project.action_id.unlink()
-                _logger.info("Removed action [%s]: %s", lang or self.env.lang, action_name)
                 project.action_id = False
 
     def _sync_menu_and_action_for_languages(self, lang_codes=None):
@@ -107,7 +99,7 @@ class ProjectProject(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """
-        Override create to automatically generate menu and action entries for new projects.
+        Extend create to automatically generate menu and action entries for new projects.
         """
         projects = super().create(vals_list)
         for project in projects:
@@ -116,19 +108,20 @@ class ProjectProject(models.Model):
 
     def write(self, vals):
         """
-        Override write to update or remove menu/action when name, key, or active changes.
+        Extend write to update or remove menu/action when name, key, or active changes.
         """
+        res = super().write(vals)
         if "name" in vals or "key" in vals or "active" in vals:
             for project in self:
                 if project.active and ("name" in vals or "key" in vals):
                     project._sync_menu_and_action_for_languages()
                 elif not project.active and "active" in vals:
                     project._remove_menu_and_action()
-        return super().write(vals)
+        return res
 
     def toggle_active(self):
         """
-        Override toggle_active to handle menu/action cleanup or recreation on activation.
+        Extend toggle_active to handle menu/action cleanup or recreation on activation.
         """
         res = super().toggle_active()
         for project in self:
