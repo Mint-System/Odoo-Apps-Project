@@ -11,6 +11,9 @@
     "version": "16.0.1.0.0",
     "license": "AGPL-3",
     "depends": ["project_key"],
+    "data": [
+        "data/project_project_data.xml",
+    ],
     "installable": True,
     "application": False,
     "auto_install": False,

@@ -8,8 +8,9 @@ _logger = logging.getLogger(__name__)
 
 class ProjectProject(models.Model):
     _inherit = "project.project"
-    menu_id = fields.Many2one("ir.ui.menu", string="Generated Menu", ondelete="set null")
-    action_id = fields.Many2one("ir.actions.act_window", string="Generated Action", ondelete="set null")
+
+    menu_id = fields.Many2one("ir.ui.menu", string="Generated Menu", ondelete="set null", copy=False)
+    action_id = fields.Many2one("ir.actions.act_window", string="Generated Action", ondelete="set null", copy=False)
 
     def _get_menu_name(self, lang=None):
         """
