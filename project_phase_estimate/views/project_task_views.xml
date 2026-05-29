@@ -8,7 +8,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='phase_id']" position="attributes">
                 <attribute name="context">{'default_project_id': project_id}</attribute>
-                <attribute name="domain">[('project_ids', 'in', project_id)]</attribute>
+                <attribute
+                    name="domain"
+                >[('project_ids', 'in', project_id),('estimate_in_progress_count', '&gt;',0)]</attribute>
             </xpath>
             <xpath expr="//field[@name='phase_id']" position="after">
                 <field

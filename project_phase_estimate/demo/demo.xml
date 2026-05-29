@@ -6,6 +6,12 @@
         <field name="planned_hours">56</field>
     </record>
 
+    <record id="project_project_1_estimate_2" model="project.estimate">
+        <field name="project_id" ref="project.project_project_1" />
+        <field name="phase_id" ref="project_phase.project_task_phase_planning" />
+        <field name="planned_hours">20</field>
+    </record>
+
     <record id="project.project_1_task_6" model="project.task">
         <field name="phase_id" ref="project_phase.project_task_phase_implementation" />
     </record>

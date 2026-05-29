@@ -16,11 +16,19 @@ Filter hours:
 Filter in progress:
 
 - Open project estimates
-- Set past end date to estimate
+- Set past end date to estimate "Integration"
 - Select filter "In Progress"
 - Ensure estimate is not shown
+- Open task "User interface improvements"
+- Ensure "Integration" is not shown
 
 Cron job:
 
 - Open scheduled actions
 - Open "Project: Update project estimates" and run it
+
+Filter project:
+
+- Open task "Planning and budget"
+- Open estimate "Planning" and then open project estimates
+- Ensure project filter "Forschung & Entwicklung" is applied

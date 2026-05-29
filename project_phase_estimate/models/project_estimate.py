@@ -28,6 +28,7 @@ class ProjectEstimate(models.Model):
     planned_hours = fields.Float()
     effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=True)
+
     progress = fields.Float(compute="_compute_progress_hours", store=True, group_operator="avg")
     effective_hours_validated = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
     remaining_hours_validated = fields.Float(compute="_compute_remaining_hours", store=True)
