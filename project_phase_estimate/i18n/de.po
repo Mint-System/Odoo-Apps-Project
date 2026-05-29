@@ -155,7 +155,7 @@ msgstr "Projekt"
 #: model:ir.model,name:project_phase_estimate.model_project_estimate
 #: model:ir.model.fields,field_description:project_phase_estimate.field_project_task__estimate_id
 msgid "Project Estimate"
-msgstr "Projektschätzung"
+msgstr "Aufwandsschätzung"
 
 #. module: project_phase_estimate
 #: model:ir.actions.act_window,name:project_phase_estimate.action_project_estimate_tree
@@ -163,7 +163,7 @@ msgstr "Projektschätzung"
 #: model_terms:ir.ui.view,arch_db:project_phase_estimate.edit_project
 #: model_terms:ir.ui.view,arch_db:project_phase_estimate.task_phase_edit
 msgid "Project Estimates"
-msgstr "Projektschätzungen"
+msgstr "Aufwandsschätzungen"
 
 #. module: project_phase_estimate
 #: model:ir.model.fields,field_description:project_phase_estimate.field_account_analytic_line__phase_id
@@ -186,7 +186,7 @@ msgstr "Verbleibende Stunden"
 #. module: project_phase_estimate
 #: model_terms:ir.ui.view,arch_db:project_phase_estimate.project_estimate_filter
 msgid "Search Project Estimate"
-msgstr "Projektschätzung suchen"
+msgstr "Suche Aufwandsschätzung"
 
 #. module: project_phase_estimate
 #: model:ir.model.fields,field_description:project_phase_estimate.field_project_estimate__sequence

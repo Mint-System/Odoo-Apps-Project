@@ -10,6 +10,7 @@
     "license": "AGPL-3",
     "depends": ["project_phase", "sale_timesheet"],
     "data": [
+        "data/ir_cron_data.xml",
         "security/ir.model.access.csv",
         "views/project_estimate_views.xml",
         "views/project_project_views.xml",

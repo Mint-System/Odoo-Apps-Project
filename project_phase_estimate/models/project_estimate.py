@@ -46,6 +46,13 @@ class ProjectEstimate(models.Model):
             else:
                 record.is_in_progress = False
 
+    def _update_is_in_progress(self):
+        """
+        Daily cron job to update estimates with start or end date.
+        """
+        today = date.today()
+        self.filtered(lambda e: e.end_date or e.start_date)._compute_is_in_progress()
+
     @api.constrains("start_date", "end_date")
     def _check_dates(self):
         for record in self:

@@ -19,3 +19,8 @@ Filter in progress:
 - Set past end date to estimate
 - Select filter "In Progress"
 - Ensure estimate is not shown
+
+Cron job:
+
+- Open scheduled actions
+- Open "Project: Update project estimates" and run it
