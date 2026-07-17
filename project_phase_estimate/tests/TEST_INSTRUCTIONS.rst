@@ -1,0 +1,5 @@
+- Go to Project > Project Phases > Project Estimates
+- Add a new project estimate
+- Go to Project > Configuration > Projects
+- Open a project
+- Find project estimates on Tab "Project Estimates"

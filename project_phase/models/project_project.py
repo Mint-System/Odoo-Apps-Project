@@ -1,6 +1,6 @@
 import logging
 
-from odoo import fields, models, tools
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -9,7 +9,6 @@ class ProjectProject(models.Model):
     _inherit = "project.project"
 
     project_phase_count = fields.Integer("Job Note", compute="_compute_get_project_phase_count")
-
 
     def _compute_get_project_phase_count(self):
         phase_data = self.env["project.task.phase"]._read_group(
@@ -64,7 +63,6 @@ class ReportProjectTaskUser(models.Model):
     #     """
     #     return select_str
 
-
     def _select(self):
         select_str = super()._select()
         select_str += """,
@@ -99,7 +97,6 @@ class ReportProjectTaskUser(models.Model):
         """
         return group_by_str
 
-
     # def init(self):
     #     tools.drop_view_if_exists(self._cr, self._table)
     #     self._cr.execute(
@@ -113,6 +110,3 @@ class ReportProjectTaskUser(models.Model):
     #     """
     #         % (self._table, self._select(), self._group_by())
     #     )
-
-
-

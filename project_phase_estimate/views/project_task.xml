@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_task_form" model="ir.ui.view">
+        <field name="name">project_phase_estimate.view_task_form2</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phase_id']" position="after">
+                <field name="estimate_progress" widget="progressbar" invisible="(not phase_id or estimate_progress == 0)"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="view_task_form2_inherited" model="ir.ui.view">
+        <field name="name">project_phase_estimate.view_task_form2_inherited</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='timesheet_error']/../group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record> -->
+
+</odoo>

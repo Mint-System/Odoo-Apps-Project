@@ -23,7 +23,7 @@ class ProjectPhase(models.Model):
     company_id = fields.Many2one(
         "res.company",
         string="Company",
-        default=lambda self: self.env.company,   # was deprecated _company_default_get()
+        default=lambda self: self.env.company,  # was deprecated _company_default_get()
     )
     user_id = fields.Many2one("res.users", string="Assignees", default=lambda self: self.env.uid)
     task_ids = fields.One2many("project.task", "phase_id")

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="project_estimate_demo_1" model="project.estimate">
+        <field name="project_id" ref="project.project_project_1" />
+        <field name="phase_id" ref="project_phase.project_task_phase_demo_1" />
+        <field name="planned_hours">56</field>
+    </record>
+
+    <record id="project.project_1_task_6" model="project.task">
+        <field name="phase_id" ref="project_phase.project_task_phase_demo_1" />
+    </record>
+
+</odoo>
