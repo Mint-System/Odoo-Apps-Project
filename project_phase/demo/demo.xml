@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="project_task_phase_demo_1" model="project.task.phase">
+        <field name="name">Implementation</field>
+    </record>
+</odoo>
