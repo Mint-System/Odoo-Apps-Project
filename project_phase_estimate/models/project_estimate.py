@@ -25,6 +25,7 @@ class ProjectEstimate(models.Model):
             "The combination of project and phase must be unique.",
         ),
     ]
+    is_in_progress = fields.Boolean(string="in progress", compute="_compute_progress_hours")
 
     @api.depends("project_id", "phase_id", "phase_id.task_ids")
     def _compute_task_ids(self):
@@ -61,6 +62,7 @@ class ProjectEstimate(models.Model):
     @api.depends("effective_hours", "planned_hours")
     def _compute_progress_hours(self):
         for estimate in self:
+            estimate.is_in_progress = False
             if estimate.planned_hours > 0.0:
                 if (
                     float_compare(
@@ -73,5 +75,6 @@ class ProjectEstimate(models.Model):
                     estimate.progress = 100
                 else:
                     estimate.progress = round(100.0 * estimate.effective_hours / estimate.planned_hours, 2)
+                    estimate.is_in_progress = True
             else:
                 estimate.progress = 0.0
