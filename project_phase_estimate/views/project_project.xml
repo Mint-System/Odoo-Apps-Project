@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
 
             <page name="description" position="after">
-                <page name="project_estimates" string="Project Estimates">
+                <page name="project_estimates" string="Project Estimates" invisible="not allow_estimate">
                     <field
                         name="estimate_ids"
                         nolabel="1"
@@ -40,6 +40,12 @@
                     </field>
                 </page>
             </page>
+
+            <xpath expr="//group[@name='group_time_managment']" position="inside">
+                <setting class="col-lg-12" id="estimate_settings" string="Project Estimates" help="Add estimates linked to phases to this project">
+                    <field name="allow_estimate"/>
+                </setting>
+            </xpath>
 
         </field>
     </record>

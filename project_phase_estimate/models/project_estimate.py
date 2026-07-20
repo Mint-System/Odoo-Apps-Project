@@ -49,10 +49,17 @@ class ProjectEstimate(models.Model):
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=False)
     progress = fields.Float(compute="_compute_progress_hours", store=False)
 
+
     @api.depends("task_ids")
     def _compute_effective_hours(self):
+        invoiced_timesheet = self.env["ir.config_parameter"].sudo().get_param(
+            "sale.invoiced_timesheet", "all"
+        )
         for estimate in self:
-            estimate.effective_hours = sum(estimate.task_ids.timesheet_ids.mapped("unit_amount"))
+            timesheets = estimate.task_ids.timesheet_ids
+            if invoiced_timesheet == "approved":
+                timesheets = timesheets.filtered("validated")
+            estimate.effective_hours = sum(timesheets.mapped("unit_amount"))
 
     @api.depends("effective_hours", "planned_hours")
     def _compute_remaining_hours(self):
