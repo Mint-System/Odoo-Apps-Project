@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="helpdesk_ticket_view_form_inherit_project_task" model="ir.ui.view">
+        <field name="name">helpdesk_project_task.helpdesk_ticket_view_form_inherit_project_task</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_project_tasks" icon="fa-tasks" invisible="project_task_count == 0">
+                    <field name="project_task_count" widget="statinfo" string="Tasks"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_form_inherit_helpdesk_timesheet" model="ir.ui.view">
+        <field name="name">helpdesk_project_task.helpdesk_ticket_view_form_inherit_helpdesk_timesheet</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                    <page string="Tasks" name="project_tasks">
+                        <field name="project_task_ids"/>
+                    </page>
+            </notebook>
+        </field>
+    </record>
+
+
+    <record id="helpdesk_ticket_action_view_project_tasks" model="ir.actions.act_window">
+        <field name="name">Project Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('helpdesk_ticket_ids', 'in', active_id)]</field>
+    </record>
+</odoo>
