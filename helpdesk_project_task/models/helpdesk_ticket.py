@@ -4,36 +4,22 @@ from odoo import api, fields, models
 class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
-    project_task_ids = fields.Many2many(
+    task_id = fields.Many2one(
         "project.task",
-        string="Tasks",
-        relation="helpdesk_ticket_project_task_rel",
-        column1="ticket_id",
-        column2="task_id",
+        string="Task",
+        help="The project task linked to this ticket.",
     )
-    project_task_count = fields.Integer(string="Task Count", compute="_compute_project_task_count")
 
-    @api.depends("project_task_ids")
-    def _compute_project_task_count(self):
-        for ticket in self:
-            ticket.project_task_count = len(ticket.project_task_ids)
-
-    def action_view_project_tasks(self):
-        self.ensure_one()
-        if len(self.project_task_ids) == 1:
-            action = {
-                "type": "ir.actions.act_window",
-                "res_model": "project.task",
-                "view_mode": "form",
-                "res_id": self.project_task_ids.id,
-                "target": "current",
-            }
-        else:
-            action = {
-                "type": "ir.actions.act_window",
-                "res_model": "project.task",
-                "view_mode": "list,form",
-                "domain": [("id", "in", self.project_task_ids.ids)],
-                "target": "current",
-            }
-        return action
+    @api.depends(
+        "task_id",
+        "task_id.sale_line_id",
+        "partner_id",
+        "use_helpdesk_sale_timesheet",
+        "project_id.pricing_type",
+        "project_id.sale_line_id",
+    )
+    def _compute_sale_line_id(self):
+        tickets_with_task = self.filtered("task_id")
+        for ticket in tickets_with_task:
+            ticket.sale_line_id = ticket.task_id.sale_line_id
+        return super(HelpdeskTicket, self - tickets_with_task)._compute_sale_line_id()

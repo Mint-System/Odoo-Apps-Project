@@ -10,19 +10,6 @@
                     <field name="helpdesk_ticket_count" widget="statinfo" string="Tickets"/>
                 </button>
             </xpath>
-
-            <notebook position="inside">
-                <page string="Tickets" name="helpdesk_tickets">
-                    <field name="helpdesk_ticket_ids"/>
-                </page>
-            </notebook>
         </field>
-    </record>
-
-    <record id="project_task_action_view_helpdesk_tickets" model="ir.actions.act_window">
-        <field name="name">Helpdesk Tickets</field>
-        <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">list,form</field>
-        <field name="domain">[('project_task_ids', 'in', active_id)]</field>
     </record>
 </odoo>

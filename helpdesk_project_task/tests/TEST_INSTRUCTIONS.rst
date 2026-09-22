@@ -1,11 +1,13 @@
-Linking Tasks to Tickets:
+Linking a task to a ticket:
 
-- Go to Helpdesk > Tickets > All tickets.
+- Go to "Helpdesk > Tickets > All" tickets.
 - Edit arbitrary ticket.
-- On "Tasks" tab link ticket to a task.
+- Select a task in the "Task" field (before Project).
 
-Linking Tickets to Tasks:
+Sale order line propagation:
 
-- Go to Projects > Tasks > All Tasks.
-- Edit arbitrary task.
-- On "Tickets" tab link task to a ticket.
+- Enable "Timesheet Invoicing" on the Helpdesk Team (form: check "Re-Invoice Time").
+- Ensure the task has a Sales Order Item (sale_line_id) set.
+- Link a ticket to that task via the ticket form.
+- Verify the ticket's "Sales Order Item" (sale_line_id) field shows the same value as the task.
+- Remove the task link or change the task's SO line: the ticket should either clear or update accordingly.

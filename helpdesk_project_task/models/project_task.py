@@ -4,12 +4,10 @@ from odoo import api, fields, models
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
-    helpdesk_ticket_ids = fields.Many2many(
+    helpdesk_ticket_ids = fields.One2many(
         "helpdesk.ticket",
+        "task_id",
         string="Tickets",
-        relation="helpdesk_ticket_project_task_rel",
-        column1="task_id",
-        column2="ticket_id",
     )
     helpdesk_ticket_count = fields.Integer(string="Ticket Count", compute="_compute_helpdesk_ticket_count")
 
