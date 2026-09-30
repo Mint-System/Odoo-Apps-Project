@@ -8,7 +8,7 @@
     "category": "Tools",
     "version": "18.0.1.0.0",
     "license": "AGPL-3",
-    "depends": ["project_phase", "hr_timesheet"],
+    "depends": ["project_phase", "hr_timesheet", "timesheet_grid"],
     "data": [
         "security/ir.model.access.csv",
         "views/project_estimate.xml",
