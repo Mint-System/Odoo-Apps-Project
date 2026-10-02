@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="automation_ticket_partner_to_task" model="base.automation">
+        <field name="name">Ticket: transfer customer to linked task</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="trigger">on_create_or_write</field>
+        <field name="trigger_field_ids" eval="[(6, 0, [
+            ref('helpdesk.field_helpdesk_ticket__partner_id'),
+            ref('helpdesk_project_task.field_helpdesk_ticket__task_id'),
+        ])]"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="action_ticket_partner_to_task" model="ir.actions.server">
+        <field name="name">Transfer customer to task and subscribe</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="base_automation_id" ref="automation_ticket_partner_to_task"/>
+        <field name="usage">base_automation</field>
+        <field name="state">code</field>
+        <field name="code">
+log("ticket rule fired: %s" % records.ids)
+for ticket in records:
+    task = ticket.task_id
+    partner = ticket.partner_id
+    if task and partner and partner == task.project_id.partner_id:
+        task.message_subscribe(partner_ids=partner.ids)
+    project_partner = task.project_id.partner_id
+    if project_partner and project_partner == partner:
+        ticket.message_subscribe(partner_ids=partner.ids)
+        </field>
+    </record>
+
+</odoo>

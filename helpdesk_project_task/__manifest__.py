@@ -9,8 +9,9 @@
     "category": "Helpdesk",
     "version": "18.0.2.0.0",
     "license": "OPL-1",
-    "depends": ["helpdesk_timesheet", "helpdesk_sale_timesheet"],
+    "depends": ["helpdesk_timesheet", "helpdesk_sale_timesheet", "base_automation"],
     "data": [
+        "data/base_automation.xml",
         "views/helpdesk_ticket_views.xml",
         "views/project_task_views.xml",
     ],

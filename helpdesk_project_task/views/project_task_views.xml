@@ -10,6 +10,41 @@
                     <field name="helpdesk_ticket_count" widget="statinfo" string="Tickets"/>
                 </button>
             </xpath>
+
+
+            <notebook position="inside">
+               <!--  <page string="Tickets" name="helpdesk_tickets">
+                    <field name="helpdesk_ticket_ids"
+                           widget="many2many"
+                           domain="[('task_id', '=', False)]">
+                        <list>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="team_id"/>
+                            <field name="user_id"/>
+                            <field name="stage_id"/>
+                        </list>
+                    </field>
+                </page> -->
+                <page string="Tickets" name="helpdesk_tickets">
+                    <field name="sale_line_id" invisible="1"/>
+                    <field name="ticket_commercial_partner_id" invisible="1"/>
+                    <field name="helpdesk_ticket_ids"
+                       widget="many2many"
+                       options="{'create': False}"
+                       readonly="not sale_line_id or not partner_id"
+                       context="{'list_view_ref': 'helpdesk.helpdesk_tickets_view_tree'}"
+                       domain="[
+                           ('task_id', '=', False),
+                           ('use_helpdesk_sale_timesheet', '=', True),
+                           ('commercial_partner_id', '=', ticket_commercial_partner_id),
+                       ]"/>
+
+
+                </page>
+            </notebook>
         </field>
     </record>
+
+
 </odoo>
