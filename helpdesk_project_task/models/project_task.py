@@ -11,12 +11,6 @@ class ProjectTask(models.Model):
     )
     helpdesk_ticket_count = fields.Integer(string="Ticket Count", compute="_compute_helpdesk_ticket_count")
 
-    ticket_commercial_partner_id = fields.Many2one(
-        "res.partner",
-        related="partner_id.commercial_partner_id",
-        string="Commercial Partner (Tickets)",
-    )
-
     @api.depends("helpdesk_ticket_ids")
     def _compute_helpdesk_ticket_count(self):
         for task in self:
@@ -41,5 +35,3 @@ class ProjectTask(models.Model):
                 "target": "current",
             }
         return action
-
-
