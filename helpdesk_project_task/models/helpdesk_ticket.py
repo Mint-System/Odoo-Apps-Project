@@ -1,5 +1,8 @@
+import logging
+
 from odoo import api, fields, models
 
+_logger = logging.getLogger(__name__)
 
 class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
@@ -23,3 +26,21 @@ class HelpdeskTicket(models.Model):
         for ticket in tickets_with_task:
             ticket.sale_line_id = ticket.task_id.sale_line_id
         return super(HelpdeskTicket, self - tickets_with_task)._compute_sale_line_id()
+
+
+    def _message_auto_subscribe_followers(self, updated_values, default_subtype_ids):
+        res = super()._message_auto_subscribe_followers(updated_values, default_subtype_ids)
+        _logger.warning(f"updated_values: {updated_values}")
+        task_id = updated_values.get("task_id")
+        if task_id:
+            task = self.env["project.task"].browse(task_id)
+            for ticket in self:
+                partner = ticket.partner_id
+                if (
+                    task
+                    and partner
+                    and partner == task.project_id.partner_id
+                    and partner not in task.message_partner_ids
+                ):
+                    task.message_subscribe(partner_ids=partner.ids)
+        return res
