@@ -32,15 +32,18 @@ class HelpdeskTicket(models.Model):
         res = super()._message_auto_subscribe_followers(updated_values, default_subtype_ids)
         _logger.warning(f"updated_values: {updated_values}")
         task_id = updated_values.get("task_id")
-        if task_id:
-            task = self.env["project.task"].browse(task_id)
-            for ticket in self:
-                partner = ticket.partner_id
-                if (
-                    task
-                    and partner
-                    and partner == task.project_id.partner_id
-                    and partner not in task.message_partner_ids
-                ):
-                    task.message_subscribe(partner_ids=partner.ids)
+        if not task_id:
+            return res
+
+        task = self.env["project.task"].browse(task_id)
+        for ticket in self:
+            partner = ticket.partner_id
+            if not (task and partner and partner == task.project_id.partner_id):
+                continue
+            if partner not in task.message_partner_ids:
+                task.message_subscribe(partner_ids=partner.ids)
+            if partner not in ticket.message_partner_ids:
+                ticket.message_subscribe(partner_ids=partner.ids)
         return res
+
+
