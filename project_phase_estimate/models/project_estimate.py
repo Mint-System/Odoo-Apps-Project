@@ -2,6 +2,7 @@ import logging
 from datetime import date
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
@@ -26,6 +27,23 @@ class ProjectEstimate(models.Model):
     )
 
     planned_hours = fields.Float()
+
+    @api.constrains("project_id", "phase_id", "is_in_progress")
+    def _check_project_phase_unique(self):
+        for estimate in self:
+            if estimate.project_id and estimate.phase_id and estimate.is_in_progress:
+                duplicate = self.search(
+                    [
+                        ("project_id", "=", estimate.project_id.id),
+                        ("phase_id", "=", estimate.phase_id.id),
+                        ("is_in_progress", "=", True),
+                        ("id", "!=", estimate.id),
+                    ],
+                    limit=1,
+                )
+                if duplicate:
+                    raise ValidationError("Only one estimate per project and phase can be in progress at a time.")
+
     effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=True)
 
@@ -40,19 +58,34 @@ class ProjectEstimate(models.Model):
         for record in self:
             if not record.start_date and not record.end_date:
                 record.is_in_progress = True
-            elif record.start_date and record.start_date <= today:
+            elif not record.start_date and record.end_date and record.end_date >= today:
                 record.is_in_progress = True
-            elif record.end_date and record.end_date >= today:
+            elif record.start_date and record.start_date <= today and (not record.end_date or record.end_date >= today):
                 record.is_in_progress = True
             else:
                 record.is_in_progress = False
 
+    @api.model
     def _update_is_in_progress(self):
         """
         Daily cron job to update estimates with start or end date.
         """
+        from odoo.exceptions import ValidationError
+
         today = date.today()
-        self.filtered(lambda e: e.end_date or e.start_date)._compute_is_in_progress()
+        estimates = self.search(
+            [
+                "|",
+                ("start_date", "!=", False),
+                ("end_date", "!=", False),
+            ]
+        )
+        for estimate in estimates:
+            try:
+                estimate._compute_is_in_progress()
+            except ValidationError:
+                # Another estimate for the same project and phase is already in progress.
+                pass
 
     @api.constrains("start_date", "end_date")
     def _check_dates(self):

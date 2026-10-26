@@ -6,17 +6,62 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='phase_id']" position="attributes">
-                <attribute name="context">{'default_project_id': project_id}</attribute>
-                <attribute
-                    name="domain"
-                >[('project_ids', 'in', project_id),('estimate_in_progress_count', '&gt;',0)]</attribute>
+            <xpath expr="//field[@name='phase_id']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='user_ids']" position="before">
+                <field
+                    name="phase_id"
+                    context="{'default_project_id': project_id}"
+                    domain="[('project_ids', 'in', project_id),('estimate_in_progress_count', '&gt;',0)]"
+                />
             </xpath>
             <xpath expr="//field[@name='phase_id']" position="after">
+                <field name="show_estimate" invisible="1" />
                 <field
                     name="estimate_progress"
                     widget="progressbar"
-                    attrs="{'invisible': ['|', ('phase_id', '=', False), ('estimate_progress', '=', 0)]}"
+                    attrs="{'invisible': [('show_estimate', '=', False)]}"
+                />
+                <field
+                    name="estimate_description"
+                    string=""
+                    readonly="1"
+                    class="fst-italic text-muted"
+                    attrs="{'invisible': [('show_estimate', '=', False)]}"
+                />
+            </xpath>
+            <xpath expr="//field[@name='child_ids']" position="attributes">
+                <attribute
+                    name="context"
+                >{'search_view_ref' : 'project.view_task_search_form_extended', 'default_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_display_project_id': project_id if not parent_id or not display_project_id else display_project_id, 'default_user_ids': user_ids, 'default_parent_id': id,
+                                    'default_partner_id': partner_id, 'default_milestone_id': allow_milestones and milestone_id, 'default_sale_line_id': sale_line_id, 'default_phase_id': phase_id, 'search_default_display_project_id': project_id }</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='child_ids']/tree//field[@name='display_project_id']"
+                position="after"
+            >
+                <field
+                    name="project_id"
+                    string="Project"
+                    optional="hide"
+                    options="{'no_open': 1}"
+                />
+            </xpath>
+            <xpath
+                expr="//field[@name='child_ids']/tree//field[@name='display_project_id']"
+                position="attributes"
+            >
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='child_ids']/tree//field[@name='milestone_id']"
+                position="after"
+            >
+                <field
+                    name="phase_id"
+                    optional="hide"
+                    context="{'default_project_id': project_id}"
+                    domain="[('project_ids', 'in', project_id),('estimate_in_progress_count', '&gt;', 0)]"
                 />
             </xpath>
         </field>

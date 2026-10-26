@@ -164,7 +164,7 @@ msgstr "Aufgabe"
 #: model:ir.model,name:project_phase.model_project_task_phase
 #: model_terms:ir.ui.view,arch_db:project_phase.task_phase_edit
 msgid "Task Phase"
-msgstr "Aufgabenphase"
+msgstr "Projektphase"
 
 #. module: project_phase
 #: model_terms:ir.ui.view,arch_db:project_phase.project_task_phase_kanban

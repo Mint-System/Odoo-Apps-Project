@@ -20,3 +20,9 @@ class ProjectProject(models.Model):
             "view_mode": "tree,form",
             "context": {"default_project_id": self.id, "search_default_project_id": self.id},
         }
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "active" in vals and not vals["active"]:
+            self.estimate_ids.write({"active": False})
+        return res
