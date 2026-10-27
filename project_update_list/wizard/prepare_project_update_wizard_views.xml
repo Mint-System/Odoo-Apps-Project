@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="prepare_project_update_wizard_form" model="ir.ui.view">
+        <field name="name">prepare.project.update.wizard.form</field>
+        <field name="model">prepare.project.update.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Prepare Project Update">
+                <group>
+                    <field name="batch" />
+                </group>
+                <footer>
+                    <button
+                        name="action_prepare"
+                        string="Prepare Updates"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

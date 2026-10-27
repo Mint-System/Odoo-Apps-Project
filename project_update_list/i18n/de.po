@@ -1,0 +1,123 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* project_update_list
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-27 16:14+0000\n"
+"PO-Revision-Date: 2026-10-27 16:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__batch
+#: model:ir.model.fields,field_description:project_update_list.field_project_update__batch
+#: model_terms:ir.ui.view,arch_db:project_update_list.project_update_view_search
+msgid "Batch"
+msgstr "Batch"
+
+#. module: project_update_list
+#: model_terms:ir.ui.view,arch_db:project_update_list.prepare_project_update_wizard_form
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__create_uid
+msgid "Created by"
+msgstr "Erstellt von"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_project_update__partner_id
+msgid "Customer"
+msgstr "Kunde"
+
+#. module: project_update_list
+#: model_terms:ir.ui.view,arch_db:project_update_list.project_update_view_tree
+msgid "Delete"
+msgstr "Löschen"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__id
+msgid "ID"
+msgstr "ID"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard____last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert von"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_prepare_project_update_wizard__write_date
+msgid "Last Updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#. module: project_update_list
+#: model:ir.actions.act_window,name:project_update_list.prepare_project_update_wizard_action
+#: model_terms:ir.ui.view,arch_db:project_update_list.prepare_project_update_wizard_form
+msgid "Prepare Project Update"
+msgstr "Projektaktualisierung vorbereiten"
+
+#. module: project_update_list
+#: model:ir.model,name:project_update_list.model_prepare_project_update_wizard
+msgid "Prepare Project Update Wizard"
+msgstr "Assistent zur Vorbereitung der Projektaktualisierung"
+
+#. module: project_update_list
+#: model_terms:ir.ui.view,arch_db:project_update_list.prepare_project_update_wizard_form
+msgid "Prepare Updates"
+msgstr "Aktualisierungen vorbereiten"
+
+#. module: project_update_list
+#: model:ir.model,name:project_update_list.model_project_project
+msgid "Project"
+msgstr "Projekt"
+
+#. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_project_update__project_user_id
+msgid "Project Manager"
+msgstr "Projektmanager"
+
+#. module: project_update_list
+#: model:ir.model,name:project_update_list.model_project_update
+msgid "Project Update"
+msgstr "Projektaktualisierung"
+
+#. module: project_update_list
+#. odoo-python
+#: code:addons/project_update_list/wizard/prepare_project_update_wizard.py:0
+#: model:ir.actions.act_window,name:project_update_list.project_update_list_action
+#: model:ir.ui.menu,name:project_update_list.project_update_list_menu
+#, python-format
+msgid "Project Updates"
+msgstr "Projektaktualisierungen"
+
+#. module: project_update_list
+#: model_terms:ir.ui.view,arch_db:project_update_list.project_update_view_tree
+msgid "View Tasks"
+msgstr "Aufgaben anzeigen"
+
+#. module: project_update_list
+#: model_terms:ir.ui.view,arch_db:project_update_list.project_update_view_tree
+msgid "View Update"
+msgstr "Aktualisierung anzeigen"

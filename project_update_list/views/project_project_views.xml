@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="prepare_project_update_wizard_action" model="ir.actions.act_window">
+        <field name="name">Prepare Project Update</field>
+        <field name="res_model">prepare.project.update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="project.model_project_project" />
+        <field name="binding_type">action</field>
+    </record>
+
+</odoo>
