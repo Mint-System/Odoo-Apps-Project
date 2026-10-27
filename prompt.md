@@ -26,6 +26,8 @@ Note: @Clanker refers to the "ai agent" (you) who is working on this prompt file
 
 ## Task
 
+### Module
+
 Create a new module `project_update_list` in this folder.
 
 The summary is "Prepare multiple project updates from kanban phase or list view."
@@ -37,15 +39,24 @@ It adds a field `batch` (char) to the `project.update` model.
 The rows are project, customer, project manager, phase, state, date and description.
 
 Further it adds an action `prepare_project_update` to `project.project`. This action shows a prompt to enter a batch name.
-It suggest the current year and week `2026W07` and confirmation generates a `project.upate` record for each selected project.
+It suggest the current year and week `2026W07` and confirmation generates a `project.update` record for each selected project.
 It then clears the description and shows the list.
 
 When user opens the list the default group `batch` is applied and expanded. The user can directly edit phase, state, date and description in the list view.
-In the list view is a additional button `View` that opens the task board of the project.
+
+In the list view is a additional button `View` that opens the task board of the project. Then there is also delete icon that allows deleting a project update. Both buttons are hidden by default.
 
 The list is sorted by batch and then by project manager.
 
-Create tests for these features.
+### Generate
+
+Use the `create-module` and `generate-module-*` commands to bootstrap the module.
+
+### Testing
+
+Create tests for these prepare method.
+
+Use the `init-module` command to install. I will then preview / test the functionality.
 
 @Clanker When task is completed set frontmatter state to review. Prompt the author to verify the results.
 
