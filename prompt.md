@@ -1,16 +1,16 @@
 ---
-title: "Bugfix Project Phase Estimate"
+title: "New module project update list"
 author: "Janik von Rotz <login@janikvonrotz.ch>"
 action: implement
-state: completed
-date_completed: 2026-10-26
-harness: pi
-model: moonshotai/Kimi-K2.6
-input_tokens: 12387699
-output_tokens: 160411
+state: draft
+date_completed: YYYY-MM-DD
+harness:
+model:
+input_tokens:
+output_tokens:
 ---
 
-# Bugfix Project Phase Estimate
+# New module project update list
 
 Note: @Clanker refers to the "ai agent" (you) who is working on this prompt file.
 
@@ -26,116 +26,31 @@ Note: @Clanker refers to the "ai agent" (you) who is working on this prompt file
 
 ## Task
 
-I have multiple bugfixes and improvements for `project_phase_estimate`. Try to identify
-the bugs in the code and create a solution.
+Create a new module `project_update_list` in this folder.
 
-### Bug: is_running computes True if start and end date are past
+The summary is "Prepare multiple project updates from kanban phase or list view."
 
-If past start date is removed and end date to a past date then it computes to false,
-which would be correct.
+This module adds a list view for `project.update` and a menu entry to access project updates.
 
-### Bug: On task show phase and percentage for estimates with is_running true
+It adds a field `batch` (char) to the `project.update` model.
 
-Currently it calculates estimate progress based on all estimates, but it should only
-consider estimates with `is_running` true.
+The rows are project, customer, project manager, phase, state, date and description.
 
-The selection of phases should be phases with is_running estimates only.
+Further it adds an action `prepare_project_update` to `project.project`. This action shows a prompt to enter a batch name.
+It suggest the current year and week `2026W07` and confirmation generates a `project.upate` record for each selected project.
+It then clears the description and shows the list.
 
-### Bug: Cron job "Project: Update project estimates" does not work
+When user opens the list the default group `batch` is applied and expanded. The user can directly edit phase, state, date and description in the list view.
+In the list view is a additional button `View` that opens the task board of the project.
 
-Maybe related to "is_running compute bug"
+The list is sorted by batch and then by project manager.
 
-### Bug: Archived projects do not archive estimates
+Create tests for these features.
 
-Make the archive action of projects cascade into estimates.
-
-### Inherit project phase on subtasks
-
-When creating a subtask apply the same phase from parent to the task.
-
-### Add project_id to context
-
-When I click on phase_id from task and then on smart-button for estimates, all estimates
-are shown.
-
-Instead the project*id should be passed as context and then applied as filter
-`default_filter*\*` to the estimates list.
-
-### Show phase_id field before user_ids field
-
-On task with `parent_id` the `phase_id` comes before the `display_project_id`. To make
-the ui consisten place the `phase_id` before `user_ids`.
-
-### Testing
-
-There is a `addons/project/project_phase_estimate/tests/TEST_INSTRUCTIONS.rst`
-containing manual instructions. I am asking you to implement this as actual Python
-tests.
-
-@Clanker When task is completed set frontmatter state to review. Prompt the author to
-verify the results.
+@Clanker When task is completed set frontmatter state to review. Prompt the author to verify the results.
 
 ## Worklog
 
-### Summary of Changes
+@Clanker Add a summary here once the task has been completed.
 
-All bugs have been identified and fixed in the `project_phase_estimate` module. The
-following changes were made:
-
-1. **Fixed `_compute_is_in_progress`** (`models/project_estimate.py`):
-
-   - The compute method incorrectly returned `True` when both `start_date` and
-     `end_date` were in the past. Fixed by adding a check that `end_date` is not in the
-     past when `start_date` is set and in the past.
-
-2. **Fixed `_compute_estimate_id`** (`models/project_task.py`):
-
-   - Added `("is_in_progress", "=", True)` filter to the estimate search so tasks only
-     link to running estimates. The phase domain in the task form
-     (`estimate_in_progress_count > 0`) already filtered phases correctly; fixing
-     `is_in_progress` resolved the underlying issue.
-
-3. **Fixed cron job `_update_is_in_progress`** (`models/project_estimate.py`):
-
-   - Added `@api.model` decorator and changed the method to search for all estimates
-     with `start_date` or `end_date` set, instead of relying on `self` (which was an
-     empty recordset when called from cron).
-
-4. **Added archive cascade** (`models/project_project.py`):
-
-   - Overrode `write` on `project.project` to set `active=False` on all related
-     estimates when a project is archived.
-
-5. **Added subtask phase inheritance** (`models/project_task.py`):
-
-   - Overrode `create` on `project.task` to propagate `phase_id` from parent to subtask
-     when `parent_id` is set and no explicit `phase_id` is provided.
-
-6. **Added project_id domain filter to phase estimates** (`models/project_phase.py`):
-
-   - Updated `action_project_estimate` to append
-     `("project_id", "=", default_project_id)` to the domain when `default_project_id`
-     is present in context. Also kept `search_default_project_id` in the returned action
-     context.
-
-7. **Moved `phase_id` before `user_ids`** (`views/project_task_views.xml`):
-
-   - Restructured the inherited view to replace the original `phase_id` (after
-     `project_id`) and reinsert it before `user_ids`, preserving the context and domain
-     attributes.
-
-8. **Implemented Python tests** (`tests/test_project_phase_estimate.py`):
-   - Created 19 automated tests covering: `is_in_progress` logic (9 scenarios), task
-     estimate linking, cron updates, project archive cascade, subtask phase inheritance,
-     phase action context/domain, effective hours date filtering, multiple estimates
-     splitting, and phase in-progress counts.
-
-### Test Results
-
-All 19 tests pass (0 failures, 0 errors).
-
----
-
-@Clanker If author confirms results set frontmatter state to completed, otherwise to
-aborted. Update date, harness and model. If you have access to session info also add
-token count.
+@Clanker If author confirms results set frontmatter state to completed, otherwise to aborted. Update date, harness and model. If you have access to session info also add token count.
