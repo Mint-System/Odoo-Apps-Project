@@ -27,10 +27,10 @@ class ProjectPhase(models.Model):
         self.ensure_one()
         default_project_id = self.env.context.get("default_project_id")
         context = {"default_project_id": default_project_id}
-        domain = [("phase_id", "=", self.id)]
+        domain = []
         if default_project_id:
             context["search_default_project_id"] = default_project_id
-            domain.append(("project_id", "=", default_project_id))
+        context["search_default_phase_id"] = self.id
         return {
             "name": "Project Estimates",
             "type": "ir.actions.act_window",

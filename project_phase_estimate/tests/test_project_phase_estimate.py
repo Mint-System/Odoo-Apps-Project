@@ -202,15 +202,19 @@ class TestProjectPhaseEstimate(TransactionCase):
         self.assertEqual(subtask.phase_id, other_phase)
 
     def test_phase_action_project_estimate_with_project_context(self):
-        """Phase estimate action should filter by project when default_project_id is in context."""
+        """Phase estimate action should set search defaults but not hard-filter."""
         action = self.phase.with_context(default_project_id=self.project.id).action_project_estimate()
-        self.assertIn(("project_id", "=", self.project.id), action["domain"])
+        self.assertNotIn(("project_id", "=", self.project.id), action["domain"])
+        self.assertNotIn(("phase_id", "=", self.phase.id), action["domain"])
         self.assertEqual(action["context"]["search_default_project_id"], self.project.id)
+        self.assertEqual(action["context"]["search_default_phase_id"], self.phase.id)
 
     def test_phase_action_project_estimate_without_project_context(self):
-        """Phase estimate action should not filter by project without default_project_id."""
+        """Phase estimate action should not hard-filter by project or phase."""
         action = self.phase.action_project_estimate()
         self.assertNotIn(("project_id", "=", self.project.id), action["domain"])
+        self.assertNotIn(("phase_id", "=", self.phase.id), action["domain"])
+        self.assertEqual(action["context"]["search_default_phase_id"], self.phase.id)
 
     def test_effective_hours_filtered_by_dates(self):
         """Effective hours should be filtered by estimate start and end dates."""
