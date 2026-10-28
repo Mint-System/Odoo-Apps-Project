@@ -1,1 +1,1 @@
-$MODULE_SUMMARY
+Prepare multiple project updates list view.

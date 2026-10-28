@@ -20,4 +20,4 @@ git clone git@github.com:Mint-System/Odoo-Apps-Project.git ./addons/project
 | [project_phase_estimate](project_phase_estimate) |         Estimate planned hours by project and phases. |
 | [project_phase](project_phase) |         Manage project task by project phases. |
 | [project_task_all_menu](project_task_all_menu) |         Add project menu to show all tasks. |
-| [project_update_list](project_update_list) |         Prepare multiple project updates from kanban phase or list view. |
+| [project_update_list](project_update_list) |         Prepare multiple project updates list view. |

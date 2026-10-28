@@ -2,7 +2,7 @@
 {
     "name": "Project Update List",
     "summary": """
-        Prepare multiple project updates from kanban phase or list view.
+        Prepare multiple project updates list view.
     """,
     "author": "Mint System GmbH",
     "website": "https://www.mint-system.ch/",
