@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <form string="Prepare Project Update">
                 <group>
+                    <field name="date" />
                     <field name="batch" />
                 </group>
                 <footer>

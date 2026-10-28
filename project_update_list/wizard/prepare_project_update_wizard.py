@@ -7,17 +7,16 @@ class PrepareProjectUpdateWizard(models.TransientModel):
     _name = "prepare.project.update.wizard"
     _description = "Prepare Project Update Wizard"
 
-    batch = fields.Char(required=True)
+    date = fields.Date(required=True, default=fields.Date.context_today)
+    batch = fields.Char(compute="_compute_batch", store=True, readonly=False, required=True)
 
-    @api.model
-    def default_get(self, fields_list):
-        res = super().default_get(fields_list)
-        if "batch" in fields_list:
-            today = fields.Date.context_today(self)
-            year = today.strftime("%Y")
-            week = today.isocalendar()[1]
-            res["batch"] = f"{year}-W{week:02d}"
-        return res
+    @api.depends("date")
+    def _compute_batch(self):
+        for wizard in self:
+            if wizard.date:
+                year = wizard.date.strftime("%Y")
+                week = wizard.date.isocalendar()[1]
+                wizard.batch = f"{year}-W{week:02d}"
 
     def action_prepare(self):
         self.ensure_one()
@@ -37,6 +36,7 @@ class PrepareProjectUpdateWizard(models.TransientModel):
                     "name": "Project Status",
                     "description": False,
                     "status": status,
+                    "date": self.date,
                 }
             )
 
