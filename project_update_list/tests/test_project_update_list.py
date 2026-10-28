@@ -81,3 +81,38 @@ class TestProjectUpdateList(TransactionCase):
             }
         )
         self.assertEqual(update.name, "Project Status")
+
+    def test_action_open_form_shows_project_updates(self):
+        """action_open_form returns a tree view filtered by project_id."""
+        update = self.env["project.update"].create(
+            {
+                "project_id": self.project.id,
+                "status": "on_track",
+            }
+        )
+        result = update.action_open_form()
+        self.assertEqual(result["res_model"], "project.update")
+        self.assertEqual(result["view_mode"], "tree,form")
+        self.assertEqual(result["domain"], [("project_id", "=", self.project.id)])
+
+    def test_collaborator_ids_shows_project_collaborators(self):
+        """Project update collaborator_ids reflects the project's collaborators as users."""
+        user = self.env["res.users"].create(
+            {
+                "name": "Test Collaborator",
+                "login": "test_collaborator",
+            }
+        )
+        self.env["project.collaborator"].create(
+            {
+                "project_id": self.project.id,
+                "partner_id": user.partner_id.id,
+            }
+        )
+        update = self.env["project.update"].create(
+            {
+                "project_id": self.project.id,
+                "status": "on_track",
+            }
+        )
+        self.assertIn(user, update.collaborator_ids)

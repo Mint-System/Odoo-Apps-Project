@@ -118,6 +118,11 @@ msgid "View Tasks"
 msgstr "Aufgaben anzeigen"
 
 #. module: project_update_list
+#: model:ir.model.fields,field_description:project_update_list.field_project_update__collaborator_ids
+msgid "Collaborators"
+msgstr "Mitarbeiter"
+
+#. module: project_update_list
 #: model_terms:ir.ui.view,arch_db:project_update_list.project_update_view_tree
 msgid "View Update"
 msgstr "Aktualisierung anzeigen"

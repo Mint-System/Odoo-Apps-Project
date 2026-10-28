@@ -39,6 +39,11 @@
                     widget="status_with_color"
                     options="{'color_field': 'color'}"
                 />
+                <field
+                    name="collaborator_ids"
+                    widget="many2many_avatar_user"
+                    optional="show"
+                />
                 <field name="date" />
                 <field name="description" />
                 <field name="batch" optional="hide" />

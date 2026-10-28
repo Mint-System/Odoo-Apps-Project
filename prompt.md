@@ -1,16 +1,16 @@
 ---
-title: "Add date picker to prepare update dialog"
+title: "Add collaborators to project update"
 author: "Janik von Rotz <login@janikvonrotz.ch>"
 action: implement
-state: completed
-date_completed: 2025-06-10
-harness: pi
-model: moonshotai/Kimi-K2.6
-input_tokens: 70573
-output_tokens: 15590
+state: review
+date_completed: YYYY-MM-DD
+harness:
+model:
+input_tokens:
+output_tokens:
 ---
 
-# Add date picker to prepare update dialog
+# Add collaborators to project update
 
 Note: @Clanker refers to the "ai agent" (you) who is working on this prompt file.
 
@@ -26,35 +26,35 @@ Note: @Clanker refers to the "ai agent" (you) who is working on this prompt file
 
 ## Task
 
-The `addons/project/project_update_list/wizard/prepare_project_update_wizard.py` wizard
-should provide a date picker.
+Update the module `addons/project/project_update_list`
 
-The selected date is used as date for the project update entries. Also the the batch
-name / week number is computed based on the date.
+The`action_open_form` must show the list of updates of the linked project and not the
+form of this update.
 
-Update tests.
+Make `project.collaborator_ids` on project form editable.
+
+Link `project.update:collaborator_ids` with `project_id.collaborator_ids`.
+
+Show collaborator names as badge on project update list.
 
 @Clanker When task is completed set frontmatter state to review. Prompt the author to
 verify the results.
 
 ## Worklog
 
-- Added `date` field (`fields.Date`) to `prepare.project.update.wizard` with a default
-  of today.
-- Replaced `@api.onchange` with a `compute="_compute_batch"` field on `batch` so
-  changing the date updates the batch name automatically. The compute uses the ISO
-  week of the selected date (`YYYY-WNN` format). `readonly=False` allows manual
-  override.
-- Updated `action_prepare` to pass the wizard's `date` to each created `project.update`
-  record.
-- Updated the wizard form view (`prepare_project_update_wizard_views.xml`) to show the
-  date picker above the batch field.
-- Updated `tests/test_project_update_list.py`:
-  - Added test verifying the default date is today.
-  - Added test verifying the default batch matches the default date's ISO week.
-  - Added test verifying `_compute_batch` computes the correct batch from date.
-  - Added test verifying created project updates use the wizard's selected date.
-  - Updated existing tests to include a date when creating the wizard.
+- Fixed `action_open_form` on `project.update` to return a tree view action filtered by
+  `project_id` instead of opening the single update form.
+- Added `collaborator_ids` Many2many field on `project.update`, related to
+  `project_id.collaborator_ids.partner_id`.
+- Added `collaborator_ids` to the project update list view tree with `many2many_tags`
+  widget (optional, shown by default).
+- Inherited `project.collaborator` to make `partner_id` writable so new collaborators
+  can be added inline.
+- Added inherited view on `project.project` form to display `collaborator_ids` as an
+  inline editable tree after the Project Manager field.
+- Updated German translation for the new "Collaborators" field string.
+- Added tests for `action_open_form` list behavior and `collaborator_ids` related field.
+- Note: Database was not running; tests were not executed.
 
 @Clanker If author confirms results set frontmatter state to completed, otherwise to
 aborted. Update date, harness and model. If you have access to session info also add

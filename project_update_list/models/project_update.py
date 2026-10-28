@@ -19,14 +19,33 @@ class ProjectUpdate(models.Model):
                 vals["name"] = "Project Status"
         return super().create(vals_list)
 
+    collaborator_ids = fields.Many2many(
+        "res.users",
+        compute="_compute_collaborator_ids",
+        string="Collaborators",
+    )
+
+    @api.depends("project_id.collaborator_ids", "project_id.collaborator_ids.partner_id")
+    def _compute_collaborator_ids(self):
+        projects = self.mapped("project_id")
+        all_partner_ids = projects.collaborator_ids.partner_id.ids
+        user_map = {}
+        if all_partner_ids:
+            for user in self.env["res.users"].search([("partner_id", "in", all_partner_ids)]):
+                user_map[user.partner_id.id] = user.id
+        for update in self:
+            partner_ids = update.project_id.collaborator_ids.partner_id.ids
+            update.collaborator_ids = [user_map[p] for p in partner_ids if p in user_map]
+
     def action_open_form(self):
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
-            "name": self.name,
+            "name": self.project_id.name,
             "res_model": "project.update",
-            "view_mode": "form",
-            "res_id": self.id,
+            "view_mode": "tree,form",
+            "domain": [("project_id", "=", self.project_id.id)],
+            "context": {"default_project_id": self.project_id.id},
             "target": "current",
         }
 
