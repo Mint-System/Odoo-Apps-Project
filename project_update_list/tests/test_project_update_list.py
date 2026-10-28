@@ -14,32 +14,32 @@ class TestProjectUpdateList(TransactionCase):
         """Wizard defaults batch to current year and week."""
         wizard = self.env["prepare.project.update.wizard"].create({})
         today = wizard.default_get(["batch"]).get("batch")
-        self.assertRegex(today, r"^\d{4}W\d{2}$")
+        self.assertRegex(today, r"^\d{4}-W\d{2}$")
 
     def test_action_prepare_creates_updates(self):
         """Prepare action creates a project update per selected project."""
-        wizard = self.env["prepare.project.update.wizard"].create({"batch": "2026W07"})
+        wizard = self.env["prepare.project.update.wizard"].create({"batch": "2026-W07"})
         ctx = {
             "active_ids": [self.project.id, self.project2.id],
             "active_model": "project.project",
         }
         result = wizard.with_context(**ctx).action_prepare()
 
-        updates = self.env["project.update"].search([("batch", "=", "2026W07")])
+        updates = self.env["project.update"].search([("batch", "=", "2026-W07")])
         self.assertEqual(len(updates), 2)
         self.assertEqual(result["res_model"], "project.update")
-        self.assertEqual(result["domain"], [("batch", "=", "2026W07")])
+        self.assertEqual(result["domain"], [("batch", "=", "2026-W07")])
 
     def test_action_prepare_clears_description(self):
         """New updates have no description."""
-        wizard = self.env["prepare.project.update.wizard"].create({"batch": "2026W07"})
+        wizard = self.env["prepare.project.update.wizard"].create({"batch": "2026-W07"})
         ctx = {
             "active_ids": [self.project.id],
             "active_model": "project.project",
         }
         wizard.with_context(**ctx).action_prepare()
 
-        update = self.env["project.update"].search([("batch", "=", "2026W07"), ("project_id", "=", self.project.id)])
+        update = self.env["project.update"].search([("batch", "=", "2026-W07"), ("project_id", "=", self.project.id)])
         self.assertFalse(update.description)
 
     def test_create_sets_name_from_batch(self):
@@ -47,7 +47,7 @@ class TestProjectUpdateList(TransactionCase):
         update = self.env["project.update"].create(
             {
                 "project_id": self.project.id,
-                "batch": "2026W07",
+                "batch": "2026-W07",
                 "status": "on_track",
             }
         )

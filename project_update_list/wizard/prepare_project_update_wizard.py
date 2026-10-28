@@ -16,7 +16,7 @@ class PrepareProjectUpdateWizard(models.TransientModel):
             today = fields.Date.context_today(self)
             year = today.strftime("%Y")
             week = today.isocalendar()[1]
-            res["batch"] = f"{year}W{week:02d}"
+            res["batch"] = f"{year}-W{week:02d}"
         return res
 
     def action_prepare(self):
