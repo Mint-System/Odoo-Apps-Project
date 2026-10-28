@@ -1,5 +1,5 @@
 ---
-commit_ref: a8a595a9a87aaffe93a62b0a528ba3fc8ce6e3b2
+commit_ref: 6c9f6bbd4c04d667708d621777bac8fe7f103622
 title: "New module project update list"
 author: "Janik von Rotz <login@janikvonrotz.ch>"
 action: implement
