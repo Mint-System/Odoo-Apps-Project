@@ -1,5 +1,5 @@
 ---
-commit_ref: 6d24f74cf97d3f070af808f1f719ee551b3ab8e7
+commit_ref: ca03c2c722c332e1d3761acfa3e01d48af0cb482
 title: "Add collaborators to project update"
 author: "Janik von Rotz <login@janikvonrotz.ch>"
 action: implement
