@@ -1,60 +1,53 @@
 ---
-title: "Add collaborators to project update"
+title: "Improve Project Update List"
 author: "Janik von Rotz <login@janikvonrotz.ch>"
 action: implement
 state: completed
-date_completed: 2026-10-28
+date_completed: 2026-11-02
 harness: pi
 model: moonshotai/Kimi-K2.6
-input_tokens: 87680
-output_tokens: 15983
+input_tokens: 31904
+output_tokens: 7315
 ---
 
-# Add collaborators to project update
+# Improve Project Update List
 
 Note: @Clanker refers to the "ai agent" (you) who is working on this prompt file.
 
 @Clanker when working on this prompt file, make sure to:
 
-- Read context and task section first
-- Prepare a list of todos
+- Read the `AGENTS.md` and `README.md` to get an understanding of the project
+- Read entire task section and prepare a list of todos
 - Update the todo list while working on task
-
-## Context
-
-@Clanker Read the `AGENTS.md` and `README.md` to get an understanding of the project.
 
 ## Task
 
-Update the module `addons/project/project_update_list`
+Imporovments for `project_update_list` module.
 
-The`action_open_form` must show the list of updates of the linked project and not the
-form of this update.
+The default sort for `project.update` is:
 
-Make `project.collaborator_ids` on project form editable.
+1. project_id
+2. project_user_id
+3. date
 
-Link `project.update:collaborator_ids` with `project_id.collaborator_ids`.
+So when I check the list I see the latest updates by project manager and project.
 
-Show collaborator names as badge on project update list.
+Then I want you to update the `name` filter. The field-filter should also search
+`project_id`. Then add `partner_id` as new filed to filter.
 
 @Clanker When task is completed set frontmatter state to review. Prompt the author to
 verify the results.
 
 ## Worklog
 
-- Fixed `action_open_form` on `project.update` to return a tree view action filtered by
-  `project_id` instead of opening the single update form.
-- Added `collaborator_ids` Many2many field on `project.update`, related to
-  `project_id.collaborator_ids.partner_id`.
-- Added `collaborator_ids` to the project update list view tree with `many2many_tags`
-  widget (optional, shown by default).
-- Inherited `project.collaborator` to make `partner_id` writable so new collaborators
-  can be added inline.
-- Added inherited view on `project.project` form to display `collaborator_ids` as an
-  inline editable tree after the Project Manager field.
-- Updated German translation for the new "Collaborators" field string.
-- Added tests for `action_open_form` list behavior and `collaborator_ids` related field.
-- Note: Database was not running; tests were not executed.
+- Updated `_order` on `project.update` from `batch, project_user_id, date desc` to
+  `project_id, project_user_id, date desc` in `models/project_update.py`.
+- Added `filter_domain` to the `name` search field so it also matches `project_id` in
+  the inherited search view.
+- Added `partner_id` as a new searchable field in the search view.
+- Pre-commit linting passed for the module.
+
+@Clanker Add a summary here once the task has been completed.
 
 @Clanker If author confirms results set frontmatter state to completed, otherwise to
 aborted. Update date, harness and model. If you have access to session info also add

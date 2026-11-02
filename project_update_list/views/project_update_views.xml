@@ -8,6 +8,14 @@
         <field name="model">project.update</field>
         <field name="inherit_id" ref="project.project_update_view_search" />
         <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute
+                    name="filter_domain"
+                >['|', ('name', 'ilike', self), ('project_id', 'ilike', self)]</attribute>
+            </field>
+            <field name="name" position="after">
+                <field name="partner_id" />
+            </field>
             <filter name="date" position="after">
                 <separator />
                 <filter
