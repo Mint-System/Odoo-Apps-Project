@@ -1,5 +1,5 @@
 ---
-commit_ref: cf0d0ebdf02d4fb6de8b49eb19f182424605f398
+commit_ref: b3edf8e8f6e41351e48a2b4ff78407e941f2f0ee
 title: "Improve Project Update List"
 author: "Janik von Rotz <login@janikvonrotz.ch>"
 action: implement
