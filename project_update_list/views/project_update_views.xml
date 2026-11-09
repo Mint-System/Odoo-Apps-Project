@@ -32,7 +32,11 @@
         <field name="model">project.update</field>
         <field name="priority">1</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" expand="context.get('expand', False)">
+            <tree
+                editable="bottom"
+                expand="True"
+                default_order="project_id, project_user_id, batch desc"
+            >
                 <field name="id" invisible="1" />
                 <field name="project_id" />
                 <field name="partner_id" widget="many2one_avatar" optional="show" />

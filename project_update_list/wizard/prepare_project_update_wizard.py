@@ -49,6 +49,5 @@ class PrepareProjectUpdateWizard(models.TransientModel):
             "domain": [("batch", "=", self.batch)],
             "context": {
                 "search_default_group_by_batch": 1,
-                "expand": True,
             },
         }

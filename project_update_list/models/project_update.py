@@ -6,7 +6,6 @@ from odoo import api, fields, models
 
 class ProjectUpdate(models.Model):
     _inherit = "project.update"
-    _order = "project_id, project_user_id, date desc"
 
     batch = fields.Char()
     partner_id = fields.Many2one("res.partner", related="project_id.partner_id", store=True, readonly=True)
