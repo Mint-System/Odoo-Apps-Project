@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="hr_timesheet_line_tree" model="ir.ui.view">
+        <field name="name">project_phase_estimate.hr_timesheet_line_tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree" />
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='task_id']" position="after">
+                <field name="phase_id" optional="show" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

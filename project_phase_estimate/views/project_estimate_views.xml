@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="project_estimate_tree" model="ir.ui.view">
+        <field name="name">project_phase_estimate.project_estimate_tree</field>
+        <field name="model">project.estimate</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="project_id" />
+                <field name="phase_id" />
+                <field name="start_date" optional="hide" />
+                <field name="end_date" optional="hide" />
+                <field name="is_in_progress" optional="hide" />
+                <field
+                    name="planned_hours"
+                    widget="timesheet_uom"
+                    sum="Total Planned Hours"
+                />
+                <field
+                    name="effective_hours"
+                    widget="timesheet_uom"
+                    sum="Total Effective Hours"
+                />
+                <field
+                    name="remaining_hours"
+                    widget="timesheet_uom"
+                    sum="Total Remaining Hours"
+                />
+                <field
+                    name="progress"
+                    widget="progressbar"
+                    optional="show"
+                    avg="Project Progress (%)"
+                />
+                <button
+                    name="action_open_timesheets"
+                    string="View Timesheets"
+                    type="object"
+                    icon="fa-clock-o"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="project_estimate_filter" model="ir.ui.view">
+        <field name="name">project_phase_estimate.project_estimate_filter</field>
+        <field name="model">project.estimate</field>
+        <field name="arch" type="xml">
+            <search string="Search Project Estimate">
+                <field name="project_id" string="Project" />
+                <field name="phase_id" string="Task Phase" />
+                <filter
+                    string="In Progress"
+                    name="in_progress"
+                    domain="[('is_in_progress', '=', True)]"
+                />
+                <filter
+                    string="Planned"
+                    name="planned"
+                    domain="[('planned_hours', '>', 0.0)]"
+                />
+                <separator />
+                <filter
+                    string="Hours Exceeded"
+                    name="hours_exceeded"
+                    domain="[('remaining_hours', '&lt;', 0.0)]"
+                />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        string="Project"
+                        name="project"
+                        context="{'group_by': 'project_id'}"
+                    />
+                    <filter
+                        string="Task Phase"
+                        name="phase"
+                        context="{'group_by': 'phase_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_project_estimate_tree" model="ir.actions.act_window">
+        <field name="name">Project Estimates</field>
+        <field name="res_model">project.estimate</field>
+        <field name="binding_view_types">tree</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_estimate_tree" />
+    </record>
+
+    <menuitem
+        id="menu_action_project_estimate_tree"
+        name="Project Estimates"
+        action="action_project_estimate_tree"
+        parent="project_phase.menu_project_phases"
+        sequence="2"
+    />
+</odoo>
+

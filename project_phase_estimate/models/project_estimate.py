@@ -2,6 +2,7 @@ import logging
 from datetime import date
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
 
 _logger = logging.getLogger(__name__)
@@ -18,14 +19,31 @@ class ProjectEstimate(models.Model):
     project_id = fields.Many2one("project.project")
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
 
-    planned_date_begin = fields.Datetime("Start Date")
-    planned_date_end = fields.Datetime("End Date")
+    start_date = fields.Datetime("Start Date")
+    end_date = fields.Datetime("End Date")
     is_in_progress = fields.Boolean(
         compute="_compute_is_in_progress",
         store=True,
     )
 
     planned_hours = fields.Float()
+
+    @api.constrains("project_id", "phase_id", "is_in_progress")
+    def _check_project_phase_unique(self):
+        for estimate in self:
+            if estimate.project_id and estimate.phase_id and estimate.is_in_progress:
+                duplicate = self.search(
+                    [
+                        ("project_id", "=", estimate.project_id.id),
+                        ("phase_id", "=", estimate.phase_id.id),
+                        ("is_in_progress", "=", True),
+                        ("id", "!=", estimate.id),
+                    ],
+                    limit=1,
+                )
+                if duplicate:
+                    raise ValidationError("Only one estimate per project and phase can be in progress at a time.")
+
     effective_hours = fields.Float(compute="_compute_effective_hours", compute_sudo=True, store=True)
     remaining_hours = fields.Float(compute="_compute_remaining_hours", store=True)
 
@@ -34,46 +52,55 @@ class ProjectEstimate(models.Model):
     remaining_hours_validated = fields.Float(compute="_compute_remaining_hours", store=True)
     progress_validated = fields.Float(compute="_compute_progress_hours", store=True, aggregator="avg")
 
-    def _local_date(self, value):
-        """Convert a UTC datetime to a date in the user's timezone."""
-        return fields.Date.context_today(self, value) if value else False
-
-    @api.depends("planned_date_begin", "planned_date_end")
+    @api.depends("start_date", "end_date")
     def _compute_is_in_progress(self):
         today = date.today()
         for record in self:
-            start_date = record._local_date(record.planned_date_begin)
-            end_date = record._local_date(record.planned_date_end)
-            if not start_date and not end_date:
+            if not record.start_date and not record.end_date:
                 record.is_in_progress = True
-            elif start_date and start_date <= today:
+            elif not record.start_date and record.end_date and record.end_date >= today:
                 record.is_in_progress = True
-            elif end_date and end_date >= today:
+            elif record.start_date and record.start_date <= today and (not record.end_date or record.end_date >= today):
                 record.is_in_progress = True
             else:
                 record.is_in_progress = False
 
+    @api.model
     def _update_is_in_progress(self):
         """
         Daily cron job to update estimates with start or end date.
         """
-        today = date.today()
-        self.filtered(lambda e: e.planned_date_end or e.planned_date_begin)._compute_is_in_progress()
+        from odoo.exceptions import ValidationError
 
-    @api.constrains("planned_date_begin", "planned_date_end")
+        today = date.today()
+        estimates = self.search(
+            [
+                "|",
+                ("start_date", "!=", False),
+                ("end_date", "!=", False),
+            ]
+        )
+        for estimate in estimates:
+            try:
+                estimate._compute_is_in_progress()
+            except ValidationError:
+                # Another estimate for the same project and phase is already in progress.
+                pass
+
+    @api.constrains("start_date", "end_date")
     def _check_dates(self):
         for record in self:
             if (
-                record.planned_date_begin
-                and record.planned_date_end
-                and record.planned_date_end < record.planned_date_begin
+                record.start_date
+                and record.end_date
+                and record.end_date < record.start_date
             ):
                 raise models.ValidationError("End date cannot be before start date.")
 
     @api.depends(
         "project_id", "phase_id", "phase_id.task_ids", "phase_id.task_ids.effective_hours",
-        "planned_date_begin",
-        "planned_date_end",
+        "start_date",
+        "end_date",
     )
     def _compute_effective_hours(self):
         for estimate in self:
@@ -88,14 +115,12 @@ class ProjectEstimate(models.Model):
                 )
             )
             effective_hours = task_ids.timesheet_ids
-            start_date = estimate._local_date(estimate.planned_date_begin)
-            end_date = estimate._local_date(estimate.planned_date_end)
 
-            if start_date:
-                effective_hours = effective_hours.filtered(lambda line: line.date >= start_date)
+            if estimate.start_date:
+                effective_hours = effective_hours.filtered(lambda line: line.date >= estimate.start_date)
 
-            if end_date:
-                effective_hours = effective_hours.filtered(lambda line: line.date <= end_date)
+            if estimate.end_date:
+                effective_hours = effective_hours.filtered(lambda line: line.date <= estimate.end_date)
 
             estimate.effective_hours = sum(effective_hours.mapped("unit_amount"))
 
@@ -151,12 +176,10 @@ class ProjectEstimate(models.Model):
         )
 
         timesheet_domain = [("task_id", "in", task_ids.ids)]
-        start_date = self._local_date(self.planned_date_begin)
-        end_date = self._local_date(self.planned_date_end)
-        if start_date:
-            timesheet_domain.append(("date", ">=", start_date))
-        if end_date:
-            timesheet_domain.append(("date", "<=", end_date))
+        if self.start_date:
+            timesheet_domain.append(("date", ">=", self.start_date))
+        if self.end_date:
+            timesheet_domain.append(("date", "<=", self.end_date))
 
         return {
             "type": "ir.actions.act_window",
