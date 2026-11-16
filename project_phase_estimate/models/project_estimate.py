@@ -19,8 +19,8 @@ class ProjectEstimate(models.Model):
     project_id = fields.Many2one("project.project")
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
 
-    start_date = fields.Datetime("Start Date")
-    end_date = fields.Datetime("End Date")
+    start_date = fields.Date(copy=False)
+    end_date = fields.Date(copy=False)
     is_in_progress = fields.Boolean(
         compute="_compute_is_in_progress",
         store=True,

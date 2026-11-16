@@ -1,6 +1,8 @@
 import logging
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
@@ -9,7 +11,9 @@ class Task(models.Model):
     _inherit = "project.task"
 
     phase_id = fields.Many2one("project.task.phase", string="Project Phase")
-    estimate_id = fields.Many2one("project.estimate", string="Project Estimate", compute="_compute_estimate_id")
+    estimate_id = fields.Many2one(
+        "project.estimate", string="Project Estimate", compute="_compute_estimate_id", search="_search_estimate_id"
+    )
     estimate_progress = fields.Float(related="estimate_id.progress", string="Estimate Progress")
     estimate_description = fields.Char(compute="_compute_estimate_description", string="Estimate Description")
     show_estimate = fields.Boolean(compute="_compute_show_estimate", string="Show Estimate")
@@ -60,6 +64,21 @@ class Task(models.Model):
                 task.estimate_id = estimate_id
             else:
                 task.estimate_id = False
+
+    def _search_estimate_id(self, operator, value):
+        """Match tasks by the (project, phase) of the given in-progress estimates.
+
+        Required so the ORM can find tasks to recompute when estimate fields change.
+        """
+        if operator not in ("in", "="):
+            raise UserError(_("Operator %s is not supported for Project Estimate.", operator))
+        estimates = self.env["project.estimate"].search([("id", operator, value), ("is_in_progress", "=", True)])
+        if not estimates:
+            return expression.FALSE_DOMAIN
+        return expression.OR(
+            [("project_id", "=", estimate.project_id.id), ("phase_id", "=", estimate.phase_id.id)]
+            for estimate in estimates
+        )
 
     @api.model_create_multi
     def create(self, vals_list):

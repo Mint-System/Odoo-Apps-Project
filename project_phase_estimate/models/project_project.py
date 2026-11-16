@@ -17,7 +17,7 @@ class ProjectProject(models.Model):
             "type": "ir.actions.act_window",
             "name": "Estimates",
             "res_model": "project.estimate",
-            "view_mode": "tree,form",
+            "view_mode": "list,form",
             "context": {"default_project_id": self.id, "search_default_project_id": self.id},
         }
 

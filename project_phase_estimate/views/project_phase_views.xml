@@ -13,7 +13,7 @@
                     name="action_project_estimate"
                     type="object"
                     icon="fa-clock-o"
-                    attrs="{'invisible': [('estimate_count', '=', 0)]}"
+                    invisible="estimate_count == 0"
                 >
                     <field
                         name="estimate_count"

@@ -34,7 +34,7 @@ class ProjectPhase(models.Model):
         return {
             "name": "Project Estimates",
             "type": "ir.actions.act_window",
-            "view_mode": "tree",
+            "view_mode": "list",
             "res_model": "project.estimate",
             "domain": domain,
             "context": context,
