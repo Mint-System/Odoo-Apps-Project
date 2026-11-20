@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project_cost_report_view_pivot" model="ir.ui.view">
+        <field name="name">project.cost.report.pivot</field>
+        <field name="model">project.cost.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Cost Cockpit" display_quantity="0" disable_linking="1">
+                <field name="project_id" type="row"/>
+                <field name="date" type="col" interval="month"/>
+                <field name="timesheet_cost"/>
+                <field name="manufacturing_operation_cost"/>
+                <field name="manufacturing_component_cost"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="project_cost_report_view_graph" model="ir.ui.view">
+        <field name="name">project.cost.report.graph</field>
+        <field name="model">project.cost.report</field>
+        <field name="arch" type="xml">
+            <graph string="Cost Cockpit" type="bar" stacked="1" disable_linking="1">
+                <field name="date" type="row" interval="month"/>
+                <field name="timesheet_cost"/>
+                <field name="manufacturing_operation_cost"/>
+                <field name="manufacturing_component_cost"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="project_cost_report_view_search" model="ir.ui.view">
+        <field name="name">project.cost.report.search</field>
+        <field name="model">project.cost.report</field>
+        <field name="arch" type="xml">
+            <search string="Cost Cockpit">
+                <field name="project_id"/>
+                <field name="date"/>
+                <filter string="This Year" name="this_year" date="date"/>
+                <filter string="Last Year" name="last_year" date="date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_by_project" domain="[]" context="{'group_by': 'project_id'}"/>
+                    <filter string="Month" name="group_by_month" domain="[]" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_project_cost_report" model="ir.actions.act_window">
+        <field name="name">Cost Cockpit</field>
+        <field name="res_model">project.cost.report</field>
+        <field name="path">cost-cockpit</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="search_view_id" ref="project_cost_report_view_search"/>
+        <field name="context">{'group_by': [], 'pivot_measures': ['timesheet_cost', 'manufacturing_operation_cost', 'manufacturing_component_cost'], 'graph_measure': 'timesheet_cost'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p>
+            <p>
+                Track manufacturing and timesheet costs per project.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_project_cost_report"
+        name="Cost Cockpit"
+        action="action_project_cost_report"
+        parent="project.menu_project_report"
+        sequence="50"/>
+
+</odoo>

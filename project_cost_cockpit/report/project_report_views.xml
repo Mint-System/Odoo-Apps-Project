@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Project Report Views -->
+    <record id="project_report_view_pivot" model="ir.ui.view">
+        <field name="name">project.cost.report.project.pivot</field>
+        <field name="model">project.cost.report.project</field>
+        <field name="arch" type="xml">
+            <pivot string="Project Report" js_class="project_report_pivot">
+                <field name="project_id" type="row"/>
+                <field name="realised" type="measure" widget="float_time"/>
+                <field name="in_progress" type="measure" widget="float_time"/>
+                <field name="budget" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="project_report_view_tree" model="ir.ui.view">
+        <field name="name">project.cost.report.project.tree</field>
+        <field name="model">project.cost.report.project</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="project_id"/>
+                <field name="realised" widget="float_time"/>
+                <field name="in_progress" widget="float_time"/>
+                <field name="budget" widget="float_time"/>
+                <button name="action_open_individual_report" type="object" string="Details" icon="fa-arrow-right"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_report_view_graph" model="ir.ui.view">
+        <field name="name">project.cost.report.project.graph</field>
+        <field name="model">project.cost.report.project</field>
+        <field name="arch" type="xml">
+            <graph string="Project Report" type="bar">
+                <field name="project_id" type="row"/>
+                <field name="realised" type="measure"/>
+                <field name="in_progress" type="measure"/>
+                <field name="budget" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="project_report_view_search" model="ir.ui.view">
+        <field name="name">project.cost.report.project.search</field>
+        <field name="model">project.cost.report.project</field>
+        <field name="arch" type="xml">
+            <search string="Project Report">
+                <field name="project_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_by_project" domain="[]" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_report" model="ir.actions.act_window">
+        <field name="name">Project Report</field>
+        <field name="res_model">project.cost.report.project</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="project_report_view_search"/>
+        <field name="context">{'pivot_measures': ['realised', 'in_progress', 'budget'], 'graph_measure': 'realised'}</field>
+    </record>
+
+    <!-- Project Individual Report Views -->
+    <record id="project_individual_report_view_pivot" model="ir.ui.view">
+        <field name="name">project.cost.report.type.pivot</field>
+        <field name="model">project.cost.report.type</field>
+        <field name="arch" type="xml">
+            <pivot string="Project Individual Report" js_class="project_individual_report_pivot">
+                <field name="project_id" type="row"/>
+                <field name="record_type" type="row"/>
+                <field name="realised" type="measure" widget="float_time"/>
+                <field name="in_progress" type="measure" widget="float_time"/>
+                <field name="budget" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="project_individual_report_view_tree" model="ir.ui.view">
+        <field name="name">project.cost.report.type.tree</field>
+        <field name="model">project.cost.report.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="project_id"/>
+                <field name="record_type"/>
+                <field name="realised" widget="float_time"/>
+                <field name="in_progress" widget="float_time"/>
+                <field name="budget" widget="float_time"/>
+                <button name="action_open_detail_report" type="object" string="Details" icon="fa-arrow-right"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_individual_report_view_search" model="ir.ui.view">
+        <field name="name">project.cost.report.type.search</field>
+        <field name="model">project.cost.report.type</field>
+        <field name="arch" type="xml">
+            <search string="Project Individual Report">
+                <field name="project_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_by_project" domain="[]" context="{'group_by': 'project_id'}"/>
+                    <filter string="Type" name="group_by_type" domain="[]" context="{'group_by': 'record_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_individual_report" model="ir.actions.act_window">
+        <field name="name">Project Individual Report</field>
+        <field name="res_model">project.cost.report.type</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="search_view_id" ref="project_individual_report_view_search"/>
+        <field name="context">{'pivot_measures': ['realised', 'in_progress', 'budget']}</field>
+    </record>
+
+    <!-- Project Task Report Views -->
+    <record id="project_task_report_view_pivot" model="ir.ui.view">
+        <field name="name">project.cost.report.task.pivot</field>
+        <field name="model">project.cost.report.task</field>
+        <field name="arch" type="xml">
+            <pivot string="Project Task Report">
+                <field name="task_id" type="row"/>
+                <field name="realised" type="measure" widget="float_time"/>
+                <field name="in_progress" type="measure" widget="float_time"/>
+                <field name="budget" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="project_task_report_view_tree" model="ir.ui.view">
+        <field name="name">project.cost.report.task.tree</field>
+        <field name="model">project.cost.report.task</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="task_id"/>
+                <field name="project_id"/>
+                <field name="realised" widget="float_time"/>
+                <field name="in_progress" widget="float_time"/>
+                <field name="budget" widget="float_time"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_task_report_view_search" model="ir.ui.view">
+        <field name="name">project.cost.report.task.search</field>
+        <field name="model">project.cost.report.task</field>
+        <field name="arch" type="xml">
+            <search string="Project Task Report">
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_by_project" domain="[]" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_task_report" model="ir.actions.act_window">
+        <field name="name">Project Task Report</field>
+        <field name="res_model">project.cost.report.task</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="search_view_id" ref="project_task_report_view_search"/>
+        <field name="context">{'pivot_measures': ['realised', 'in_progress', 'budget']}</field>
+    </record>
+
+    <!-- Project MO Report Views -->
+    <record id="project_mo_report_view_pivot" model="ir.ui.view">
+        <field name="name">project.cost.report.production.pivot</field>
+        <field name="model">project.cost.report.production</field>
+        <field name="arch" type="xml">
+            <pivot string="Project MO Report">
+                <field name="production_id" type="row"/>
+                <field name="realised" type="measure" widget="float_time"/>
+                <field name="in_progress" type="measure" widget="float_time"/>
+                <field name="budget" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="project_mo_report_view_tree" model="ir.ui.view">
+        <field name="name">project.cost.report.production.tree</field>
+        <field name="model">project.cost.report.production</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="production_id"/>
+                <field name="project_id"/>
+                <field name="realised" widget="float_time"/>
+                <field name="in_progress" widget="float_time"/>
+                <field name="budget" widget="float_time"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_mo_report_view_search" model="ir.ui.view">
+        <field name="name">project.cost.report.production.search</field>
+        <field name="model">project.cost.report.production</field>
+        <field name="arch" type="xml">
+            <search string="Project MO Report">
+                <field name="project_id"/>
+                <field name="production_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="group_by_project" domain="[]" context="{'group_by': 'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_mo_report" model="ir.actions.act_window">
+        <field name="name">Project MO Report</field>
+        <field name="res_model">project.cost.report.production</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="search_view_id" ref="project_mo_report_view_search"/>
+        <field name="context">{'pivot_measures': ['realised', 'in_progress', 'budget']}</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_project_report" name="Project Report" action="project_report" parent="project.menu_project_report" sequence="10"/>
+    <menuitem id="menu_project_individual_report" name="Project Individual Report" action="project_individual_report" parent="project.menu_project_report" sequence="20"/>
+    <menuitem id="menu_project_task_report" name="Project Task Report" action="project_task_report" parent="project.menu_project_report" sequence="30"/>
+    <menuitem id="menu_project_mo_report" name="Project MO Report" action="project_mo_report" parent="project.menu_project_report" sequence="40"/>
+
+</odoo>
