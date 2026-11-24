@@ -1,13 +1,13 @@
 # Odoo Apps: Project
 
-Collection of project model related modules.
+Odoo modules extending the `project` module.
 
 ## Usage
 
-Clone module into Odoo addon directory.
+Clone this repo into the Odoo addons directory.
 
 ```bash
-git clone git@github.com:mint-system/odoo-apps-project.git ./addons/project
+git clone git@github.com:Mint-System/Odoo-Apps-Project.git ./addons/project
 ```
 
 ## Available modules
