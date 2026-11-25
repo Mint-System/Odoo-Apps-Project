@@ -14,4 +14,4 @@ git clone git@github.com:Mint-System/Odoo-Apps-Project.git ./addons/project
 
 | Module | Summary |
 | --- | --- |
-| [helpdesk_project_task](helpdesk_project_task) | Link helpdesk tickets to project tasks. |
+| [helpdesk_project_task](helpdesk_project_task) |         Link helpdesk tickets to project tasks. |
